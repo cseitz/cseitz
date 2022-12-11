@@ -1,0 +1,41 @@
+.page {
+    margin: 0 auto; /* for centering, feel free to use flexbox or some other method*/
+    box-sizing: border-box;
+    padding: 0.5in; /* controls margins */
+    width: 8.5in;
+    height: 11in;
+    // background-color: white;
+    box-shadow: 0 3px 8px -3px rgba(0, 0, 0, 0.7);
+    a {
+        color: #1976d2;
+    }
+    * {
+        font-family: "Ropa Sans", sans-serif;
+    }
+}
+
+@page {
+    margin: 0px;
+}
+
+@media print {
+    html {
+        height: 11in;
+        width: 8.5in;
+        overflow: hidden;
+    }
+
+    body {
+        margin: 0;
+    }
+
+    .page {
+        width: 100%;
+        box-shadow: none;
+        // background-color: white;
+    }
+
+    .not-print {
+        display: none;
+    }
+}
