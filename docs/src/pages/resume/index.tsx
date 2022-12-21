@@ -1,3 +1,8 @@
+import GithubIcon from '@cseitz/fontawesome-react/github';
+import PhoneIcon from '@cseitz/fontawesome-react/phone';
+import HomeIcon from '@cseitz/fontawesome-react/house';
+import LinkedInIcon from '@cseitz/fontawesome-react/linkedin';
+import HandshakeIcon from '@cseitz/fontawesome-react/handshake';
 import { Box, BoxProps, Divider, Grid, Text, Title } from '@mantine/core';
 import { isArray } from 'lodash';
 import { Page } from '../../widgets/page';
@@ -7,7 +12,6 @@ const portfolio = website + '/portfolio';
 
 export default function Resume() {
     return <Page>
-        <title>fgasjhgfdsa</title>
         <Header />
         <Body />
     </Page>
@@ -19,18 +23,32 @@ function Header() {
     const subtitle = 'Full-Stack Web Development'
     return <Grid pb={20}>
         <Grid.Col span={6}>
-            <a style={{ textDecoration: 'none', color: 'inherit' }} href={website}>
+            <a style={{ textDecoration: 'none', color: 'inherit' }} href={website} target='_blank' rel="noreferrer">
                 <Title order={4} sx={{ fontWeight: 400, fontSize: '1.5rem' }}>{name}</Title>
             </a>
-            <a style={{ textDecoration: 'none' }} href={'mailto:' + email}>
+            <a style={{ textDecoration: 'none' }} href={'mailto:' + email} target='_blank' rel="noreferrer">
                 <Title order={6} sx={{ fontWeight: 400, fontSize: '1rem' }}>{email}</Title>
             </a>
             {/* <Text c="dimmed">{subtitle}</Text> */}
         </Grid.Col>
         <Grid.Col span={6} sx={{ textAlign: 'right', display: 'flex', flexWrap: 'wrap', gap: 5, justifyContent: 'flex-end' }}>
-            <p style={{ margin: 0, paddingRight: 15 }}>Cleveland, Ohio</p>
-            <p style={{ margin: 0 }}>(440) 226-1337</p>
-            <p style={{ margin: 0 }}>github.com/cseitz</p>
+            <a href="https://www.google.com/maps/place/Cleveland,+OH/@41.497447,-81.8459438,11z/data=!3m1!4b1!4m5!3m4!1s0x8830ef2ee3686b2d:0xed04cb55f7621842!8m2!3d41.49932!4d-81.6943605" target='_blank' rel="noreferrer"
+            style={{ margin: 0, paddingRight: 15, color: 'inherit', textDecoration: 'none' }}>
+                <HomeIcon style='regular' sx={{ height: '1em', paddingRight: 8 }} />
+                Cleveland, Ohio
+            </a>
+            <a href="tel:+1-440-226-1337" style={{ margin: 0, color: 'inherit', textDecoration: 'none' }} target='_blank' rel="noreferrer">
+                <PhoneIcon style='regular' sx={{ height: '1em', paddingRight: 8 }} />
+                (440) 226-1337
+            </a>
+            <a href="https://github.com/cseitz" style={{ margin: 0, paddingRight: 15, color: 'inherit', textDecoration: 'none' }} target='_blank' rel="noreferrer">
+                <GithubIcon sx={{ height: '1em', paddingRight: 8 }} />
+                GitHub
+            </a>
+            <a href="https://www.linkedin.com/in/seitzc/" style={{ margin: 0, color: 'inherit', textDecoration: 'none' }} target='_blank' rel="noreferrer">
+                <LinkedInIcon sx={{ height: '1em', paddingRight: 8 }} />
+                LinkedIn
+            </a>
         </Grid.Col>
     </Grid>
 }
@@ -60,7 +78,7 @@ function Section(props: {
     const { title, children, ...rest } = props;
     return <Box mb='xs'>
         {title && (<>
-            <Title order={6} sx={{ fontWeight: 500 }}>{title}</Title>
+            <Title order={6} fw={600} sx={{ fontWeight: 500 }}>{title}</Title>
             <Divider orientation='horizontal' />
         </>)}
         <Box mt={2} {...rest}>
@@ -77,13 +95,12 @@ function About() {
         <Text fz={'sm'}>
             Passionate and focused Full-Stack Website Developer & Software Engineer who has been programming as a hobby for over a decade.
         </Text>
-        <Text fz={'sm'} mt={10}>
+        <Text fz={'sm'} mt={12}>
+            Bachelor of Science in Computer Science.
+        </Text>
+        <Text fz={'sm'} mt={12}>
             Graduated Magna Cum Laude from Kent State University in Fall 2022.
         </Text>
-        {/* <p>portfolio</p> */}
-        <p>handshake</p>
-        <p>linkedin</p>
-        <p>github</p>
     </Section>
 }
 
@@ -148,7 +165,7 @@ function Education() {
                 when: ['2020', '2022'],
                 href: 'https://hacksu.com',
                 about: `Student Club President of HacKSU, Kent State University's computer science club. 
-            Facilitated club processes, organized annual hackathon, lead website development, hosted instructional events at weekly meetings.`
+            Facilitated club processes, organized annual hackathon, led website development and hosted instructional events at weekly meetings.`
             },
         ]
     return <Section title='Education'>
@@ -176,7 +193,9 @@ function Education() {
                 {experiences.map(({ title, subtitle, when, href, about }) => (
                     <Grid key={title} mb={'sm'}>
                         <Grid.Col span={7} pb={0}>
-                            <Text fz={'sm'}> {title}</Text>
+                            <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
+                                <Text fz={'sm'}> {title}</Text>
+                            </a>
                         </Grid.Col>
                         <Grid.Col span={12 - 7} pb={0}>
                             <Text fz={'sm'} sx={{ textAlign: 'right' }}>
@@ -184,7 +203,7 @@ function Education() {
                             </Text>
                         </Grid.Col>
                         <Grid.Col span={7} py={0}>
-                            {href && subtitle ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href}>
+                            {href && subtitle ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
                                 <Text fz={'xs'}>{subtitle}</Text>
                             </a> : <Text fz={'xs'}>{subtitle}</Text>}
                         </Grid.Col>
@@ -215,7 +234,7 @@ function Experience() {
                 subtitle: 'Pocket Worlds - Everskies.com',
                 when: ['May 2022', 'Dec 2022'],
                 href: 'https://www.pocketworlds.com/',
-                about: `Implemented website, mobile app, and backend features and bugfixes for an online forum social space. `
+                about: `Implemented website, mobile app, and backend features and bug fixes for an online forum social space. `
                     + `Worked with PHP, Angular.js, and Flutter.`,
             },
             // {
@@ -236,6 +255,7 @@ function Experience() {
             {
                 title: 'Excel TECC, Senior Study',
                 subtitle: 'Progressive Educational Partnership Program',
+                href: 'https://www.progressive.com/about/corporate-responsibility/education-initiatives/',
                 extraSubtitle: true,
                 when: ['Mar 2019', 'May 2019'],
                 about: `Accepted into competitive high school senior study program in partnership with Progressive Insurance. `
@@ -254,7 +274,7 @@ function Experience() {
                     </Text>
                 </Grid.Col>
                 <Grid.Col span={extraSubtitle ? 12 : 7} py={0}>
-                    {href ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href}>
+                    {href ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
                         <Text fz={'sm'}>{subtitle}</Text>
                     </a> : <Text fz={'sm'}>{subtitle}</Text>}
                 </Grid.Col>
@@ -278,13 +298,13 @@ function Projects() {
         when: string
     }[] = [
             {
-                title: 'Capstone, Bachelor of Science',
+                title: 'Capstone Project',
                 when: 'May 2022',
                 href: 'https://github.com/cseitz/capstone',
-                about: `Lead team project on developing unique software to implement features as per stakeholder request.
+                about: `Led team project on developing unique software to implement features as per stakeholder request.
                 Documented project with diagrams and detailed writeups, ensured all deadlines were met,
-                assigned tasks to team members, assisted team members in completion of tasks,
-                performed code reviews, facilitated nearly all group processes.`
+                assigned tasks to team members, assisted team members in the completion of tasks,
+                performed code reviews, and facilitated nearly all group processes.`
             },
             {
                 title: 'Software Engineering Project',
@@ -325,7 +345,7 @@ function Projects() {
             </Grid>
 
             return <Box mb='sm' key={title}>
-                {href ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href}>
+                {href ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
                     {result}
                 </a> : result}
                 {about && <Text fz='xs'>
@@ -406,21 +426,25 @@ function Awards() {
     const awards: {
         title: string;
         when: string;
+        href?: string;
         subtitle?: string;
     }[] = [
             {
                 title: 'Honors College Scholar',
                 subtitle: 'Kent State University',
+                href: 'https://www.kent.edu/honors',
                 when: '2019 - 2022'
             },
             {
                 title: 'Choose Ohio First',
                 subtitle: 'Academic Scholarship',
+                href: 'https://highered.ohio.gov/initiatives/affordability/choose-ohio-first/cof-overview/cof',
                 when: '2020 - 2022'
             },
             {
                 title: 'Outstanding Presentation',
                 subtitle: 'Choose Ohio First Conference',
+                href: 'https://highered.ohio.gov/initiatives/affordability/choose-ohio-first/cof-overview/cof',
                 when: '2021, 2022'
             },
             /*{
@@ -436,19 +460,23 @@ function Awards() {
             {
                 title: 'SkillsUSA National Finalist',
                 subtitle: '4th place nationally, Website Design',
+                href: 'https://www.skillsusa.org/competitions/',
                 when: '2019'
             },
             {
                 title: 'SkillsUSA National Finalist',
                 subtitle: '5th place nationally, Website Design',
+                href: 'https://www.skillsusa.org/competitions/',
                 when: '2018'
             }
         ];
     return <Section title='Honors & Awards' pt={4}>
-        {awards.map(({ title, subtitle, when }) => (
+        {awards.map(({ title, subtitle, href, when }) => (
             <Grid key={title} mb={1}>
                 <Grid.Col span={8} pt={4} pb={0}>
-                    <Text>{title}</Text>
+                    {href ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
+                        <Text>{title}</Text>
+                    </a> : <Text>{title}</Text>}
                 </Grid.Col>
                 <Grid.Col span={12 - 8} pt={4} pb={0}>
                     <Text fz='sm' sx={{ textAlign: 'right' }} dangerouslySetInnerHTML={{ __html: when.split('-').join('&ndash;') }} />
