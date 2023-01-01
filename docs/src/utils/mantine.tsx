@@ -15,6 +15,7 @@ declare module '@mantine/core' {
     }
 }
 
+const FORCED_COLOR_SCHEME: ColorScheme | null = 'light';
 
 var dynamicColorScheme = false;
 export function ThemeProvider(props: { theme: Omit<MantineThemeOverride, 'colorScheme'>, colorScheme: ColorScheme, firstVisit?: boolean, children: any }) {
@@ -28,6 +29,7 @@ export function ThemeProvider(props: { theme: Omit<MantineThemeOverride, 'colorS
     const preferredColorScheme: ColorScheme = useMediaQuery('(prefers-color-scheme: dark)') ? 'dark' : 'light';
     const desiredColorScheme = useMemo<ColorScheme>(() => {
         const desired = getCookie('color-scheme');
+        if (FORCED_COLOR_SCHEME) return FORCED_COLOR_SCHEME;
         if (desired === 'dark') return 'dark';
         if (desired === 'light') return 'light';
         return preferredColorScheme;
@@ -68,6 +70,6 @@ ThemeProvider.getInitialProps = ({ ctx }: AppContext) => {
     const colorScheme: ColorScheme = cookie === 'dark' ? 'dark' : 'light';
     return {
         firstVisit: cookie === undefined,
-        colorScheme,
+        colorScheme: FORCED_COLOR_SCHEME || colorScheme,
     }
 }

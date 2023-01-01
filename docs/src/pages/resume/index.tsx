@@ -11,10 +11,15 @@ const website = 'https://github.com/cseitz'; //'https://cseitz.dev';
 const portfolio = website + '/portfolio';
 
 export default function Resume() {
-    return <Page>
-        <Header />
-        <Body />
-    </Page>
+    return <>
+        <Page>
+            <Header />
+            <Body />
+        </Page>
+        {/* <Page>
+            <Body />
+        </Page> */}
+    </>
 }
 
 function Header() {
@@ -33,7 +38,7 @@ function Header() {
         </Grid.Col>
         <Grid.Col span={6} sx={{ textAlign: 'right', display: 'flex', flexWrap: 'wrap', gap: 5, justifyContent: 'flex-end' }}>
             <a href="https://www.google.com/maps/place/Cleveland,+OH/@41.497447,-81.8459438,11z/data=!3m1!4b1!4m5!3m4!1s0x8830ef2ee3686b2d:0xed04cb55f7621842!8m2!3d41.49932!4d-81.6943605" target='_blank' rel="noreferrer"
-            style={{ margin: 0, paddingRight: 15, color: 'inherit', textDecoration: 'none' }}>
+                style={{ margin: 0, paddingRight: 15, color: 'inherit', textDecoration: 'none' }}>
                 <HomeIcon style='regular' sx={{ height: '1em', paddingRight: 8 }} />
                 Cleveland, Ohio
             </a>
