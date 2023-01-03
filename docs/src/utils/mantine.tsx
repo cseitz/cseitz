@@ -15,7 +15,7 @@ declare module '@mantine/core' {
     }
 }
 
-const FORCED_COLOR_SCHEME: ColorScheme | null = 'light';
+const FORCED_COLOR_SCHEME: ColorScheme | null = null; //'light';
 
 var dynamicColorScheme = false;
 export function ThemeProvider(props: { theme: Omit<MantineThemeOverride, 'colorScheme'>, colorScheme: ColorScheme, firstVisit?: boolean, children: any }) {

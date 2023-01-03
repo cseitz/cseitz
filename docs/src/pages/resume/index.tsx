@@ -26,7 +26,7 @@ function Header() {
     const name = 'Chris Seitz';
     const email = 'cseitz.work@gmail.com';
     const subtitle = 'Full-Stack Web Development'
-    return <Grid pb={15}>
+    return <Grid pb={20}>
         <Grid.Col span={6}>
             <a style={{ textDecoration: 'none', color: 'inherit' }} href={website} target='_blank' rel="noreferrer">
                 <Title order={4} sx={{ fontWeight: 400, fontSize: '1.5rem' }}>{name}</Title>
@@ -62,15 +62,15 @@ function Body() {
     const median = 7;
     return <Grid>
         <Grid.Col span={median} pr={16}>
-            <Skills />
+            {/* <Skills /> */}
             {/* <Education /> */}
             <Experience />
             <Projects />
         </Grid.Col>
         <Grid.Col span={12 - median} pl={8}>
             <Education />
-            {/* <Skills /> */}
             <Awards />
+            <Skills />
             <About />
         </Grid.Col>
     </Grid>
@@ -258,15 +258,22 @@ function Experience() {
                 href: 'https://hyland.com',
                 about: `Designed software to automatically document Hyland's R&D virtual environments through Powershell and the VMWare vSphere API.`,
             },
+            // {
+            //     title: 'Excel TECC, Senior Study',
+            //     subtitle: 'Progressive Educational Partnership Program',
+            //     href: 'https://www.progressive.com/about/corporate-responsibility/education-initiatives/',
+            //     extraSubtitle: true,
+            //     when: ['Mar 2019', 'May 2019'],
+            //     about: `Accepted into competitive high school senior study program in partnership with Progressive Insurance. `
+            //         + `Explored technical aspects of the company's various lines of business, concluding with a final presentation.`
+            // },
             {
-                title: 'Excel TECC, Senior Study',
-                subtitle: 'Progressive Educational Partnership Program',
-                href: 'https://www.progressive.com/about/corporate-responsibility/education-initiatives/',
-                extraSubtitle: true,
-                when: ['Mar 2019', 'May 2019'],
-                about: `Accepted into competitive high school senior study program in partnership with Progressive Insurance. `
-                    + `Explored technical aspects of the company's various lines of business, concluding with a final presentation.`
-            }
+                title: 'Game Developer',
+                subtitle: 'Roblox, Freelance',
+                when: ['Feb 2014', 'Nov 2020'],
+                href: 'https://create.roblox.com/docs',
+                about: ``,
+            },
         ]
     return <Section title='Experience'>
         {experiences.map(({ title, subtitle, when, href, about, extraSubtitle }) => (
@@ -318,7 +325,13 @@ function Projects() {
                 // assigned tasks to team members, assisted team members in the completion of tasks,
                 // performed code reviews, and facilitated nearly all group processes.`
                 about: `Lead team project to implement features as per stakeholder request. Documented with diagrams & detailed writeups, ensured deadlines were met, `
-                + `assigned and assisted teammembers with tasks, performed code reviews, and facilitated group SCRUM processes.`
+                    + `assigned and assisted teammembers with tasks, performed code reviews, and facilitated group SCRUM processes.`
+            },
+            {
+                title: 'Cloud Servers Discussion',
+                when: 'Nov 2021',
+                href: 'https://github.com/cseitz-portfolio/lesson-vps-discussion',
+                about: `yeyeyeyeye`
             },
             {
                 title: 'Software Engineering Project',
@@ -335,9 +348,16 @@ function Projects() {
                 about: `Designed and developed to replace the previous website.
                 Built using Vue.js and hosted on the DigitalOcean cloud.`
             },
+            {
+                title: 'Database Project',
+                when: 'Apr 2021',
+                href: 'https://github.com/cseitz/intro-to-db-project1',
+                about: `blablabla`,
+            },
             // {
             //     title: 'Kent Hack Enough',
-            //     when: '2020 &ndash; 2022',
+            //     // when: '2020 &ndash; 2022',
+            //     when: '2020, 2021, 2022',
             //     href: `https://github.com/hacksu/kenthackenough`,
             //     about: `Designed and implemented major stylistic changes for KHE 2020 as per the event's theme.
             //     Maintained application throughout the event. Ensured all event processes were completed successfully.
@@ -383,6 +403,7 @@ function Skills() {
         'green': ['#81c784', text],
         'grey': ['#90a4ae', text],
     }
+    const alphabetize = true;
     const sections: {
         [key: string]: [
             string,
@@ -401,9 +422,11 @@ function Skills() {
             ['C++', colors.blue, 'https://www.cplusplus.com/'],
             ['PHP', colors.indigo, 'https://www.php.net/'],
             ['Shell', colors.yellow, 'https://www.php.net/'],
+            ['Python', colors.yellow, 'https://www.python.org/'],
         ],
         'Software & Frameworks': [
             ['React', colors.cyan, 'https://reactjs.org/'],
+            ['Next.js', colors.grey, 'https://nextjs.org/'],
             ['Angular', colors.cyan, 'https://reactjs.org/'],
             ['Vue', colors.green, 'https://vuejs.org/'],
             ['Electron', colors.grey, 'https://www.electronjs.org/'],
@@ -420,12 +443,16 @@ function Skills() {
             ['Website Design', colors.green, website],
             ['Cloud Servers', colors.yellow, 'https://digitalocean.com'],
             // ['Project Planning', colors.pink, 'https://github.com/cseitz/capstone'],
-            ['Task Automation', colors.indigo, 'https://www.php.net/'],
+            ['Automation', colors.indigo, 'https://www.php.net/'],
+            ['CI/CD', colors.green, ''],
         ],
     };
-    Object.keys(sections).forEach(o => {
-        sections[o].sort((a, b) => (a[0] as any).localeCompare(b[0]) as number)
-    })
+    if (alphabetize) {
+        Object.keys(sections).forEach(o => {
+            if (o.startsWith('Programming')) return;
+            sections[o].sort((a, b) => (a[0] as any).localeCompare(b[0]) as number)
+        })
+    }
     return <Section title='Skills'>
         {Object.entries(sections).map(([title, items]) => (
             <Box pb={4} pt={2} key={title}>
@@ -449,40 +476,41 @@ function Awards() {
                 href: 'https://www.kent.edu/honors',
                 when: '2019 - 2022'
             },
-            {
-                title: 'Choose Ohio First',
-                subtitle: 'Academic Scholarship',
-                href: 'https://highered.ohio.gov/initiatives/affordability/choose-ohio-first/cof-overview/cof',
-                when: '2020 - 2022'
-            },
-            {
-                title: 'Outstanding Presentation',
-                subtitle: 'Choose Ohio First Conference',
-                href: 'https://highered.ohio.gov/initiatives/affordability/choose-ohio-first/cof-overview/cof',
-                when: '2021, 2022'
-            },
+            // {
+            //     title: 'Choose Ohio First',
+            //     subtitle: 'Academic Scholarship',
+            //     href: 'https://highered.ohio.gov/initiatives/affordability/choose-ohio-first/cof-overview/cof',
+            //     when: '2020 - 2022'
+            // },
+            // {
+            //     title: 'Outstanding Presentation',
+            //     subtitle: 'Choose Ohio First Conference',
+            //     href: 'https://highered.ohio.gov/initiatives/affordability/choose-ohio-first/cof-overview/cof',
+            //     when: '2021, 2022'
+            // },
             /*{
                 title: 'SkillsUSA State Champion',
                 subtitle: 'Website Design, High School',
                 when: '2018 & 2019'
             },*/
+            {
+                title: 'SkillsUSA National Finalist',
+                subtitle: 'Website Design; 5th place (2018), 4th place (2019)',
+                href: 'https://www.skillsusa.org/competitions/',
+                when: '2018 & 2019'
+            },
             // {
             //     title: 'SkillsUSA National Finalist',
-            //     subtitle: 'Website Design; 5th place (2018), 4th place (2019)',
-            //     when: '2018 & 2019'
+            //     subtitle: '4th place nationally, Website Design',
+            //     href: 'https://www.skillsusa.org/competitions/',
+            //     when: '2019'
             // },
-            {
-                title: 'SkillsUSA National Finalist',
-                subtitle: '4th place nationally, Website Design',
-                href: 'https://www.skillsusa.org/competitions/',
-                when: '2019'
-            },
-            {
-                title: 'SkillsUSA National Finalist',
-                subtitle: '5th place nationally, Website Design',
-                href: 'https://www.skillsusa.org/competitions/',
-                when: '2018'
-            }
+            // {
+            //     title: 'SkillsUSA National Finalist',
+            //     subtitle: '5th place nationally, Website Design',
+            //     href: 'https://www.skillsusa.org/competitions/',
+            //     when: '2018'
+            // }
         ];
     return <Section title='Honors & Awards' pt={4}>
         {awards.map(({ title, subtitle, href, when }) => (
