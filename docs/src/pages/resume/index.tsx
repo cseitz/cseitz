@@ -26,7 +26,7 @@ function Header() {
     const name = 'Chris Seitz';
     const email = 'cseitz.work@gmail.com';
     const subtitle = 'Full-Stack Web Development'
-    return <Grid pb={20}>
+    return <Grid pb={15}>
         <Grid.Col span={6}>
             <a style={{ textDecoration: 'none', color: 'inherit' }} href={website} target='_blank' rel="noreferrer">
                 <Title order={4} sx={{ fontWeight: 400, fontSize: '1.5rem' }}>{name}</Title>
@@ -236,7 +236,8 @@ function Experience() {
     }[] = [
             {
                 title: 'Junior Full-Stack Developer',
-                subtitle: 'Pocket Worlds - Everskies.com',
+                subtitle: 'Pocket Worlds',
+                // subtitle: 'Pocket Worlds - Everskies.com',
                 when: ['May 2022', 'Dec 2022'],
                 href: 'https://www.pocketworlds.com/',
                 about: `Implemented website, mobile app, and backend features and bug fixes for an online forum social space. `
@@ -303,26 +304,34 @@ function Projects() {
         when: string
     }[] = [
             {
+                title: 'Kent Hack Enough 2023',
+                when: 'Ongoing',
+                href: 'https://github.com/hacksu/khe-2023',
+                about: `Leading planning & development for React, Next.js, Node.js, and TypeScript monorepo intended to replace the aging Kent Hack Enough systems.`
+            },
+            {
                 title: 'Capstone Project',
                 when: 'May 2022',
                 href: 'https://github.com/cseitz/capstone',
-                about: `Led team project on developing unique software to implement features as per stakeholder request.
-                Documented project with diagrams and detailed writeups, ensured all deadlines were met,
-                assigned tasks to team members, assisted team members in the completion of tasks,
-                performed code reviews, and facilitated nearly all group processes.`
+                // about: `Led team project on developing unique software to implement features as per stakeholder request.
+                // Documented project with diagrams and detailed writeups, ensured all deadlines were met,
+                // assigned tasks to team members, assisted team members in the completion of tasks,
+                // performed code reviews, and facilitated nearly all group processes.`
+                about: `Lead team project to implement features as per stakeholder request. Documented with diagrams & detailed writeups, ensured deadlines were met, `
+                + `assigned and assisted teammembers with tasks, performed code reviews, and facilitated group SCRUM processes.`
             },
             {
                 title: 'Software Engineering Project',
                 when: 'May 2021',
                 href: 'https://github.com/cseitz/SoftwareEngineering-Team-TGMGPA',
                 about: `Lead team project as Scrum Master. 
-                Implemented capabilities as per instructor request by allocating work via the Scrum process.
-                Hosted on AWS Lightsail.`
+                Implemented capabilities as per instructor request by allocating work via the Scrum process.`
             },
             {
                 title: 'HacKSU Website',
                 when: 'May 2021',
                 href: `https://github.com/hacksu/hacksu-2021`,
+                // about: `Developed Vue.js website to replace the previous website.`
                 about: `Designed and developed to replace the previous website.
                 Built using Vue.js and hosted on the DigitalOcean cloud.`
             },
