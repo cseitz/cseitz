@@ -3,12 +3,28 @@ import PhoneIcon from '@cseitz/fontawesome-react/phone';
 import HomeIcon from '@cseitz/fontawesome-react/house';
 import LinkedInIcon from '@cseitz/fontawesome-react/linkedin';
 import HandshakeIcon from '@cseitz/fontawesome-react/handshake';
-import { Box, BoxProps, Divider, Grid, Text, Title } from '@mantine/core';
+import _LinkIcon from '@cseitz/fontawesome-react/link';
+import { Box, BoxProps, Divider, Grid, List, Text, Title } from '@mantine/core';
 import { isArray } from 'lodash';
 import { Page } from '../../widgets/page';
+import getConfig from 'next/config';
 
 const website = 'https://github.com/cseitz'; //'https://cseitz.dev';
 const portfolio = website + '/portfolio';
+
+const textIndent = 0; //'0.5em';
+
+const SHOW_LINKS = true;
+// const DASH = `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%2333333340' stroke-width='4' stroke-dasharray='8%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");`
+const DASH = `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%2333333326' stroke-width='4' stroke-dasharray='8%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");`
+
+
+function LinkIcon(props: Parameters<typeof _LinkIcon>[0]) {
+    const { sx = {}, ...rest } = props;
+    return <sup>
+        <_LinkIcon sx={{ fontSize: '0.75em', ...sx, opacity: '0.25' }} title="Interactive Link" {...rest} />
+    </sup>
+}
 
 export default function Resume() {
     return <>
@@ -24,15 +40,19 @@ export default function Resume() {
 
 function Header() {
     const name = 'Chris Seitz';
-    const email = 'cseitz.work@gmail.com';
-    const subtitle = 'Full-Stack Web Development'
+    const email = getConfig().publicRuntimeConfig.email as string;
+    const phone = getConfig().publicRuntimeConfig.phone as string;
+    const subtitle = 'Full-Stack Web Development';
+    if (!phone || !email) {
+        throw new Error(`Missing environment varaibles. Create .env.local and populate from next.config.mjs!`)
+    }
     return <Grid pb={20}>
         <Grid.Col span={6}>
             <a style={{ textDecoration: 'none', color: 'inherit' }} href={website} target='_blank' rel="noreferrer">
                 <Title order={4} sx={{ fontWeight: 400, fontSize: '1.5rem' }}>{name}</Title>
             </a>
             <a style={{ textDecoration: 'none' }} href={'mailto:' + email} target='_blank' rel="noreferrer">
-                <Title order={6} sx={{ fontWeight: 400, fontSize: '1rem' }}>{email}</Title>
+                <Title order={6} sx={{ fontWeight: 600, fontSize: '1rem' }}>{email}</Title>
             </a>
             {/* <Text c="dimmed">{subtitle}</Text> */}
         </Grid.Col>
@@ -42,9 +62,9 @@ function Header() {
                 <HomeIcon style='regular' sx={{ height: '1em', paddingRight: 8 }} />
                 Cleveland, Ohio
             </a>
-            <a href="tel:+1-440-226-1337" style={{ margin: 0, color: 'inherit', textDecoration: 'none' }} target='_blank' rel="noreferrer">
+            <a href={`tel:+1-${phone.split(' ').join('-').split(/[()]/).join('')}`} style={{ margin: 0, color: 'inherit', textDecoration: 'none' }} target='_blank' rel="noreferrer">
                 <PhoneIcon style='regular' sx={{ height: '1em', paddingRight: 8 }} />
-                (440) 226-1337
+                {phone}
             </a>
             <a href="https://github.com/cseitz" style={{ margin: 0, paddingRight: 15, color: 'inherit', textDecoration: 'none' }} target='_blank' rel="noreferrer">
                 <GithubIcon sx={{ height: '1em', paddingRight: 8 }} />
@@ -69,8 +89,8 @@ function Body() {
         </Grid.Col>
         <Grid.Col span={12 - median} pl={8}>
             <Education />
-            <Awards />
             <Skills />
+            <Awards />
             <About />
         </Grid.Col>
     </Grid>
@@ -110,8 +130,9 @@ function About() {
 }
 
 function Education() {
-    const degree = `B.S. Computer Science`;
-    const place = `Kent State University`;
+    const showClasses = false;
+    const degree = `Kent State University`;
+    const place = `Bachelor of Science in Computer Science`;
     const gpa = `3.82`;
     const when = `Fall 2022`;
     // const classes: string[][] = [
@@ -135,33 +156,58 @@ function Education() {
     //     ]
     // ];
     const classes: string[][] = [
-        [
-            'Software Engineering',
-            'Database Design',
-            'Algorithms',
-        ],
-        [
-            'Data Structures',
-            'Cryptology',
-            'Computer Networking',
-        ],
-        [
-            'Cloud Systems Computing',
-            'Operating Systems',
-        ],
+        // [
+        //     'Software Engineering',
+        //     'Database Design',
+        //     'Algorithms',
+        // ],
+        // [
+        //     'Data Structures',
+        //     'Cryptology',
+        //     'Computer Networking',
+        // ],
+        // [
+        //     'Cloud Systems Computing',
+        //     'Operating Systems',
+        // ],
         [
             'Web Programming',
             'Human Interface Design',
-            // 'Game Engine Concepts',
+
             // 'Calculus II',
         ],
+        [
+            'Game Engine Concepts',
+        ]
     ];
+    // const classes: string[][] = [
+    //     [
+    //         'Software Engineering',
+    //         'Database Design',
+    //         'Algorithms',
+    //     ],
+    //     [
+    //         'Data Structures',
+    //         'Cryptology',
+    //         'Computer Networking',
+    //     ],
+    //     [
+    //         'Cloud Systems Computing',
+    //         'Operating Systems',
+    //     ],
+    //     [
+    //         'Web Programming',
+    //         'Human Interface Design',
+    //         // 'Game Engine Concepts',
+    //         // 'Calculus II',
+    //     ],
+    // ];
     const experiences: {
         title: string
         subtitle?: string
         when: string[] | string
         href?: string,
-        about?: string,
+        about?: string | string[],
     }[] = [
             {
                 title: 'Club President, HacKSU',
@@ -169,8 +215,11 @@ function Education() {
                 // when: ['May 2020', 'Apr 2022'],
                 when: ['2020', '2022'],
                 href: 'https://hacksu.com',
-                about: `Student Club President of HacKSU, Kent State University's computer science club. 
-            Facilitated club processes, organized annual hackathon, led website development and hosted instructional events at weekly meetings.`
+                about: [
+                    `Organized annual hackathon, led website development, managed club outreach, and hosted instructional events at weekly meetings.`,
+                ],
+                //     about: `Student Club President of HacKSU, Kent State University's computer science club. 
+                // Facilitated club processes, organized annual hackathon, led website development and hosted instructional events at weekly meetings.`
             },
         ]
     return <Section title='Education'>
@@ -181,15 +230,39 @@ function Education() {
             <Grid.Col span={3} pb={0} sx={{ textAlign: 'right' }} pr={10}>
                 <Text fz="sm">{when}</Text>
             </Grid.Col>
-            <Grid.Col span={7} py={0}>
+            <Grid.Col span={11} py={0}>
                 <Text fz="sm">{place}</Text>
             </Grid.Col>
-            <Grid.Col span={5} py={0} sx={{ textAlign: 'right' }} pr={10}>
-                <Text fz="xs">{gpa} GPA</Text>
+            {/* <Grid.Col span={6} py={0}>
+                <Text fz="sm">Bachelor of Science</Text>
             </Grid.Col>
+            <Grid.Col span={6} py={0}>
+                <Text fz="sm" sx={{ textAlign: 'right' }}>Computer Science</Text>
+            </Grid.Col> */}
+            <Grid.Col span={8} py={0}>
+                <Text fz="xs">Magna Cum Laude, {gpa} GPA</Text>
+            </Grid.Col>
+            {/* <Grid.Col span={8} py={0}>
+                <Text fz="xs">Magna Cum Laude</Text>
+            </Grid.Col>
+            <Grid.Col span={4} py={0}>
+                <Text fz="xs" sx={{ textAlign: 'right' }}>{gpa} GPA</Text>
+            </Grid.Col> */}
+            {/* <Grid.Col span={8} py={0}>
+                <Text fz="xs">Graduated Magna Cum Laude</Text>
+            </Grid.Col>
+            <Grid.Col span={3} py={0}>
+                <Text fz="xs" pl={'2px'}>{gpa} GPA</Text>
+            </Grid.Col> */}
+            {/* <Grid.Col span={7} py={0}>
+                <Text fz="sm">{place}</Text>
+            </Grid.Col> */}
+            {/* <Grid.Col span={5} py={0} sx={{ textAlign: 'right' }} pr={10}>
+                <Text fz="xs">{gpa} GPA</Text>
+            </Grid.Col> */}
         </Grid>
         <Box mt={'xs'}>
-            {classes.map(o => (
+            {showClasses && classes.map(o => (
                 <Text fz="xs" key={o.join(' ')}>
                     <div dangerouslySetInnerHTML={{ __html: o.join('	&ndash; ') }} />
                 </Text>
@@ -197,26 +270,31 @@ function Education() {
             <Box mt={10}>
                 {experiences.map(({ title, subtitle, when, href, about }) => (
                     <Grid key={title} mb={'sm'}>
-                        <Grid.Col span={7} pb={0}>
+                        <Grid.Col span={8} pb={0}>
                             <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
-                                <Text fz={'sm'}> {title}</Text>
+                                <Text fz={'sm'}>{title} {SHOW_LINKS && href && <LinkIcon sx={{}} />}</Text>
                             </a>
                         </Grid.Col>
-                        <Grid.Col span={12 - 7} pb={0}>
-                            <Text fz={'sm'} sx={{ textAlign: 'right' }}>
+                        <Grid.Col span={12 - 8} pb={0}>
+                            <Text fz={'xs'} sx={{ textAlign: 'right' }}>
                                 <div dangerouslySetInnerHTML={{ __html: isArray(when) ? when.join('	&ndash; ') : when }} />
                             </Text>
                         </Grid.Col>
                         <Grid.Col span={7} py={0}>
                             {href && subtitle ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
-                                <Text fz={'xs'}>{subtitle}</Text>
+                                <Text fz={'xs'}>{subtitle} {SHOW_LINKS && <LinkIcon sx={{}} />}</Text>
                             </a> : <Text fz={'xs'}>{subtitle}</Text>}
                         </Grid.Col>
                         <Grid.Col span={12 - 7} py={0}>
 
                         </Grid.Col>
                         <Grid.Col span={12} pb={0} pt={'0.2em'}>
-                            <Text fz={'xs'}>{about}</Text>
+                            {/* <Text fz={'xs'} sx={{ textIndent }}>{about}</Text> */}
+                            {about && (typeof about === 'string' ? <Text fz={'xs'} sx={{ textIndent }}>{about}</Text> : (
+                                <List pr={'md'}>
+                                    {about.map(o => <List.Item key={o} fz={'xs'}>{o}</List.Item>)}
+                                </List>
+                            ))}
                         </Grid.Col>
                     </Grid>
                 ))}
@@ -231,17 +309,21 @@ function Experience() {
         subtitle: string
         when: string[] | string
         href?: string,
-        about?: string,
+        about?: string | string[],
         extraSubtitle?: boolean,
     }[] = [
             {
-                title: 'Junior Full-Stack Developer',
+                title: 'Full-Stack Developer',
                 subtitle: 'Pocket Worlds',
                 // subtitle: 'Pocket Worlds - Everskies.com',
                 when: ['May 2022', 'Dec 2022'],
                 href: 'https://www.pocketworlds.com/',
-                about: `Implemented website, mobile app, and backend features and bug fixes for an online forum social space. `
-                    + `Worked with PHP, Angular.js, and Flutter.`,
+                about: [
+                    `Implemented website, mobile app, and backend features and bug fixes for an online forum social space.`,
+                    // `Worked with PHP, Angular.js, and Flutter.`
+                ],
+                // about: `Implemented website, mobile app, and backend features and bug fixes for an online forum social space. `
+                //     + `Worked with PHP, Angular.js, and Flutter.`,
             },
             // {
             //     title: 'Club President',
@@ -252,11 +334,15 @@ function Experience() {
             // Facilitated club processes, organized annual hackathon, lead website development, hosted instructional events every tuesday at club meetings.`
             // },
             {
-                title: 'Cloud Infrastructure Admin',
+                title: 'Cloud Infrastructure Administrator',
                 subtitle: 'Hyland Software, Summer Co-Op',
                 when: ['May 2021', 'Aug 2021'], //'Summer 2021',
                 href: 'https://hyland.com',
-                about: `Designed software to automatically document Hyland's R&D virtual environments through Powershell and the VMWare vSphere API.`,
+                about: [
+                    `Designed software to automatically document Hyland's R&D virtual environments.`,
+                    // `Utilized Powershell and the VMWare vSphere API.`
+                ],
+                // about: `Designed software to automatically document Hyland's R&D virtual environments through Powershell and the VMWare vSphere API.`,
             },
             // {
             //     title: 'Excel TECC, Senior Study',
@@ -268,34 +354,51 @@ function Experience() {
             //         + `Explored technical aspects of the company's various lines of business, concluding with a final presentation.`
             // },
             {
-                title: 'Game Developer',
+                title: 'Systems Engineer',
                 subtitle: 'Roblox, Freelance',
                 when: ['Feb 2014', 'Nov 2020'],
                 href: 'https://create.roblox.com/docs',
-                about: ``,
+                about: [
+                    `Developed experiences with over 6,558 peak users while also within the top 10 of platform earnings at the time.`,
+                    `Implemented one of the first automated user management systems for the largest community on a platform in 2016.`,
+                    // `Utilized PHP and Node.js for backend systems, SQL for databases, and Lua for game features.`,
+                ]
+                // about: `Implemented one of the first automated user management systems used by the largest community on the platform in 2016. `
+                // + `Developed games with over 6,000 peak users while also within the top 10 of platform earnings at the time. `
+                // + `Utilized PHP and Node.js for backend systems, SQL for databases, and Lua for game features.`,
             },
         ]
     return <Section title='Experience'>
-        {experiences.map(({ title, subtitle, when, href, about, extraSubtitle }) => (
-            <Grid key={title} mb={'sm'}>
-                <Grid.Col span={7} pb={0}>
+        {experiences.map(({ title, subtitle, when, href, about, extraSubtitle }, i) => (
+            <Grid key={title}>
+                <Grid.Col span={7} pb={0} sx={{ maxWidth: '65%', flexGrow: 1 }}>
                     <Text>{title}</Text>
                 </Grid.Col>
-                <Grid.Col span={12 - 7} pb={0}>
-                    <Text fz={'sm'} sx={{ textAlign: 'right' }}>
+                <Grid.Col span={12 - 7} pb={0} sx={{ maxWidth: '35%' }}>
+                    <Text fz={'xs'} sx={{ textAlign: 'right' }}>
                         <div dangerouslySetInnerHTML={{ __html: isArray(when) ? when.join('	&ndash; ') : when }} />
                     </Text>
                 </Grid.Col>
-                <Grid.Col span={extraSubtitle ? 12 : 7} py={0}>
+                <Grid.Col span={extraSubtitle ? 12 : 7} py={0} >
                     {href ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
-                        <Text fz={'sm'}>{subtitle}</Text>
+                        <Text fz={'sm'}>{subtitle} {SHOW_LINKS && <LinkIcon sx={{}} />} </Text>
                     </a> : <Text fz={'sm'}>{subtitle}</Text>}
                 </Grid.Col>
                 {!extraSubtitle && <Grid.Col span={12 - 7} py={0}>
 
                 </Grid.Col>}
                 <Grid.Col span={12} pb={0} pt={'0.2em'}>
-                    <Text fz={'xs'}>{about}</Text>
+                    {about && (typeof about === 'string' ? <Text fz={'xs'} sx={{ textIndent }}>{about}</Text> : (
+                        <List pr={'md'} pb={6} mb={6} sx={{
+                            borderImageSource: DASH,
+                            borderImageSlice: 2,
+                            borderImageRepeat: 'round',
+                            borderColor: 'red',
+                            borderBottom: i !== (experiences.length - 1) ? 'dashed 1px' : undefined,
+                        }}>
+                            {about.map(o => <List.Item key={o} fz={'xs'}>{o}</List.Item>)}
+                        </List>
+                    ))}
                 </Grid.Col>
             </Grid>
         ))}
@@ -303,18 +406,25 @@ function Experience() {
 }
 
 function Projects() {
+    const bulleted = true;
     const projects: {
         title: string
         subtitle?: string
-        about?: string
+        about?: string | string[]
         href?: string
         when: string
     }[] = [
             {
                 title: 'Kent Hack Enough 2023',
-                when: 'Ongoing',
+                when: 'Dec 2022',
                 href: 'https://github.com/hacksu/khe-2023',
-                about: `Leading planning & development for React, Next.js, Node.js, and TypeScript monorepo intended to replace the aging Kent Hack Enough systems.`
+                // about: `Leading planning & development for React, Next.js, Node.js, and TypeScript monorepo intended to replace the aging Kent Hack Enough systems.`
+                // about: `Developed Kent Hack Enough monorepo containing server, staff management portal, and UI library with reusable logical components and separated styling from logical code in annual websites using NextJS. `
+                //     + `Set up and maintained tRPC v10 with custom routes and context functions for improved separation of concerns and streamlined database queries.`
+                about: [
+                    `Developed Kent Hack Enough monorepo containing server, staff management portal, and UI library with reusable logical components and separated styling from logical code in annual websites using NextJS.`,
+                    `Set up and maintained tRPC v10 with custom routes and context functions for improved separation of concerns and streamlined database queries.`
+                ]
             },
             {
                 title: 'Capstone Project',
@@ -324,35 +434,52 @@ function Projects() {
                 // Documented project with diagrams and detailed writeups, ensured all deadlines were met,
                 // assigned tasks to team members, assisted team members in the completion of tasks,
                 // performed code reviews, and facilitated nearly all group processes.`
-                about: `Lead team project to implement features as per stakeholder request. Documented with diagrams & detailed writeups, ensured deadlines were met, `
-                    + `assigned and assisted teammembers with tasks, performed code reviews, and facilitated group SCRUM processes.`
+                // TODO: write about what my project actually was
+                about: [
+                    `Lead team project to implement features as per stakeholder request.`,
+                    `Documented with diagrams & detailed writeups while ensuring deadlines were met.`,
+                    `Assigned tasks and assisted teammembers with tasks, performed code reviews, and facilitated group SCRUM processes.`
+                ],
+                // about: `Lead team project to implement features as per stakeholder request. Documented with diagrams & detailed writeups, ensured deadlines were met, `
+                //     + `assigned and assisted teammembers with tasks, performed code reviews, and facilitated group SCRUM processes.`
             },
-            {
-                title: 'Cloud Servers Discussion',
-                when: 'Nov 2021',
-                href: 'https://github.com/cseitz-portfolio/lesson-vps-discussion',
-                about: `yeyeyeyeye`
-            },
+            // {
+            //     title: 'Cloud Servers Discussion',
+            //     when: 'Nov 2021',
+            //     href: 'https://github.com/cseitz-portfolio/lesson-vps-discussion',
+            //     about: `yeyeyeyeye`
+            // },
             {
                 title: 'Software Engineering Project',
                 when: 'May 2021',
                 href: 'https://github.com/cseitz/SoftwareEngineering-Team-TGMGPA',
-                about: `Lead team project as Scrum Master. 
-                Implemented capabilities as per instructor request by allocating work via the Scrum process.`
+                // todo: lead with "leading scrum project"
+                about: [
+                    `Implemented capabilities as per instructor request by allocating work and facilitating the group SCRUM process.`,
+                ],
+                // about: `Lead team project as Scrum Master. 
+                // Implemented capabilities as per instructor request by allocating work via the Scrum process.`
             },
             {
                 title: 'HacKSU Website',
                 when: 'May 2021',
                 href: `https://github.com/hacksu/hacksu-2021`,
                 // about: `Developed Vue.js website to replace the previous website.`
-                about: `Designed and developed to replace the previous website.
-                Built using Vue.js and hosted on the DigitalOcean cloud.`
+                about: [
+                    // `Designed and developed to replace the previous website.`,
+                    `Built using Vue.js and hosted on the DigitalOcean cloud.`,
+                ]
+                // about: `Designed and developed to replace the previous website.
+                // Built using Vue.js and hosted on the DigitalOcean cloud.`
             },
             {
                 title: 'Database Project',
                 when: 'Apr 2021',
                 href: 'https://github.com/cseitz/intro-to-db-project1',
-                about: `blablabla`,
+                about: [
+                    `Designed and implemented a mock hospital SQL database, leveraging the power of SQL relations in all aspects.`,
+                    `Created detailed reports and diagrams as per project requirements.`
+                ]
             },
             // {
             //     title: 'Kent Hack Enough',
@@ -365,27 +492,50 @@ function Projects() {
             // },
         ];
     return <Section title='Projects'>
-        {projects.map(({ title, subtitle, about, href, when }) => {
+        {projects.map(({ title, subtitle, about, href, when }, i) => {
             const result = <Grid>
                 <Grid.Col span={8}>
-                    <Text>{title}</Text>
+                    <Text>{title} {SHOW_LINKS && href && <LinkIcon sx={{}} />} </Text>
                 </Grid.Col>
                 <Grid.Col span={12 - 8} sx={{ textAlign: 'right' }} pr={10}>
-                    <Text fz='sm' dangerouslySetInnerHTML={{ __html: when }} />
+                    <Text fz='xs' dangerouslySetInnerHTML={{ __html: when }} />
                 </Grid.Col>
                 {subtitle && <Grid.Col span={12} sx={{ textAlign: 'right' }} pr={10}>
                     <Text>{subtitle}</Text>
                 </Grid.Col>}
             </Grid>
 
-            return <Box mb='sm' key={title}>
-                {href ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
-                    {result}
-                </a> : result}
-                {about && <Text fz='xs'>
+            return <>
+                <Box pb={6} mb={6} key={title} sx={{
+                    borderImageSource: DASH,
+                    borderImageSlice: 2,
+                    borderImageRepeat: 'round',
+                    borderColor: 'red',
+                    borderBottom: i !== (projects.length - 1) ? 'dashed 1px' : undefined,
+                }}>
+                    {href ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
+                        {result}
+                    </a> : result}
+                    {about && (
+                        !isArray(about) && typeof about === 'string' ? <Text fz='xs' sx={{ textIndent }}>
+                            {about}
+                        </Text> : (!bulleted ? about.map((o, i) => (
+                            <Text fz='xs' key={i} pt={i > 0 ? 5 : undefined} sx={{ textIndent }}>
+                                {o}
+                            </Text>
+                        )) : <List pr={'md'}>
+                            {about.map(o => <List.Item key={o} fz={'xs'}>{o}</List.Item>)}
+                        </List>)
+                    )}
+                    {/* {about && <Text fz='xs'>
                     {about}
-                </Text>}
-            </Box>
+                </Text>} */}
+
+                </Box>
+                {/* {i !== (projects.length - 1) && (
+                    <Divider variant='dashed' mb={6} opacity={0.5} size='sm' />
+                )} */}
+            </>
         })}
     </Section>
 }
@@ -414,8 +564,8 @@ function Skills() {
         'Programming Languages': [
             ['TypeScript', colors.cyan, 'https://www.typescriptlang.org/'],
             ['JavaScript', colors.yellow, 'https://developer.mozilla.org/en-US/docs/Web/JavaScript'],
-            ['HTML5', colors.orange, 'https://developer.mozilla.org/en-US/docs/Glossary/HTML5'],
-            ['CSS', colors.blue, 'https://developer.mozilla.org/en-US/docs/Web/CSS'],
+            // ['HTML5', colors.orange, 'https://developer.mozilla.org/en-US/docs/Glossary/HTML5'],
+            // ['CSS', colors.blue, 'https://developer.mozilla.org/en-US/docs/Web/CSS'],
             ['Sass', colors.pink, 'https://sass-lang.com/'],
             ['Lua', colors.indigo, 'https://www.lua.org/'],
             ['C#', colors.blue, 'https://www.cplusplus.com/'],
@@ -456,8 +606,8 @@ function Skills() {
     return <Section title='Skills'>
         {Object.entries(sections).map(([title, items]) => (
             <Box pb={4} pt={2} key={title}>
-                <Text fz='xs'>{title}</Text>
-                <Text fz='sm' dangerouslySetInnerHTML={{ __html: items.map(o => o[0]).join(', ') }} />
+                <Text fz='sm'>{title}</Text>
+                <Text fz={'xs'} dangerouslySetInnerHTML={{ __html: items.map(o => o[0]).join(', ') }} />
             </Box>
         ))}
     </Section>
@@ -497,7 +647,7 @@ function Awards() {
                 title: 'SkillsUSA National Finalist',
                 subtitle: 'Website Design; 5th place (2018), 4th place (2019)',
                 href: 'https://www.skillsusa.org/competitions/',
-                when: '2018 & 2019'
+                when: '2018, 2019'
             },
             // {
             //     title: 'SkillsUSA National Finalist',
@@ -515,13 +665,13 @@ function Awards() {
     return <Section title='Honors & Awards' pt={4}>
         {awards.map(({ title, subtitle, href, when }) => (
             <Grid key={title} mb={1}>
-                <Grid.Col span={8} pt={4} pb={0}>
+                <Grid.Col span={8} pt={4} pb={0} sx={{}}>
                     {href ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
-                        <Text>{title}</Text>
+                        <Text fz={'sm'}>{title} {SHOW_LINKS && href && <LinkIcon sx={{}} />} </Text>
                     </a> : <Text>{title}</Text>}
                 </Grid.Col>
-                <Grid.Col span={12 - 8} pt={4} pb={0}>
-                    <Text fz='sm' sx={{ textAlign: 'right' }} dangerouslySetInnerHTML={{ __html: when.split('-').join('&ndash;') }} />
+                <Grid.Col span={12 - 8} pt={4} pb={0} sx={{}}>
+                    <Text fz='xs' sx={{ textAlign: 'right' }} dangerouslySetInnerHTML={{ __html: when.split('-').join('&ndash;') }} />
                 </Grid.Col>
                 <Grid.Col span={12} pt={0} pb={6}>
                     <Text fz='xs'>{subtitle}</Text>
@@ -530,3 +680,10 @@ function Awards() {
         ))}
     </Section>
 }
+
+
+// function DashedBottomDivider() {
+//     return <Box>
+
+//     </Box>
+// }

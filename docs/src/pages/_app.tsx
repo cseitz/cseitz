@@ -1,33 +1,40 @@
-import { MantineThemeOverride } from '@mantine/core';
-import { NextPageContext } from 'next';
-import { AppContext, AppProps } from 'next/app';
-import { ThemeProvider } from '../utils/mantine';
+import { NotificationsProvider } from '@mantine/notifications';
+import { withMantine } from '../utils/mantine';
+import { createContext } from 'react';
+import { Router } from 'next/router';
+import { AppProps } from 'next/app';
 import '../styles/global.scss';
 
 // @ts-ignore
 import { FiberProvider } from 'its-fine';
 
-function App(props: InitialProps) {
-    const { Component, pageProps } = props;
-
-    const { colorScheme, firstVisit } = props;
-    const theme: MantineThemeOverride = {
+declare global {
+    export interface AppInitialProps extends AppProps {
+        pageProps: AppInitialPageProps
+    }
+    export interface AppInitialPageProps {
 
     }
+}
+
+export const InitialRouter = createContext<Router>(null as any);
+
+function App(props: AppInitialProps) {
+    const { Component, pageProps } = props;
 
     return <FiberProvider>
-        <ThemeProvider {...{ theme, colorScheme, firstVisit }}>
-            {/* <Navigation /> */}
-            <Component {...pageProps} />
-        </ThemeProvider>
+        <InitialRouter.Provider value={props.router}>
+            <NotificationsProvider>
+                <Component {...pageProps} />
+            </NotificationsProvider>
+        </InitialRouter.Provider>
     </FiberProvider>
 }
 
-type InitialProps = AppProps & Awaited<ReturnType<typeof App.getInitialProps>>;
-App.getInitialProps = async function (ctx: AppContext) {
-    return {
-        ...ThemeProvider.getInitialProps(ctx),
-    }
-}
 
-export default App;
+export default withMantine(App, {
+    cookie: `cseitz-resume-color-scheme`,
+    withGlobalStyles: true,
+    withNormalizeCSS: true,
+    colorScheme: 'light',
+})
