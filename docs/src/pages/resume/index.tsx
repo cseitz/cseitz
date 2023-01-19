@@ -24,13 +24,13 @@ const DASH = `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmln
 function LinkIcon(props: Parameters<typeof _LinkIcon>[0]) {
     const { sx = {}, ...rest } = props;
     return <sup>
-        <_LinkIcon sx={{ fontSize: '0.75em', ...sx, opacity: '0.25' }} title="Interactive Link" {...rest} />
+        <_LinkIcon sx={{ fontSize: '0.75em', ...sx, opacity: '0.25', maxHeight: '1em' }} title="Interactive Link" {...rest} />
     </sup>
 }
 
 export default function Resume() {
     return <>
-        <Page sx={{ }}>
+        <Page sx={{}}>
             <Header />
             <Body />
         </Page>
@@ -57,7 +57,7 @@ function Header() {
     // const avatar = 'https://img-9gag-fun.9cache.com/photo/aqnRGQP_460s.jpg';
     // const avatar = 'https://thispersondoesnotexist.com/image';
     // const avatar = 'https://media.tenor.com/nCfArwGenA0AAAAd/the-rock-raising-eyebrow.gif';
-    
+
     return <Grid pb={15} mt={-30}>
         {avatar && <Grid.Col span={2} sx={{}}>
             <Avatar size={60} src={avatar} radius={100} mx='auto' sx={{
@@ -66,12 +66,16 @@ function Header() {
             }} />
         </Grid.Col>}
         <Grid.Col span={avatar ? 4 : 6}>
-            <a style={{ textDecoration: 'none', color: 'inherit' }} href={website} target='_blank' rel="noreferrer">
-                <Title order={4} sx={{ fontWeight: 400, fontSize: '1.5rem' }}>{name}</Title>
-            </a>
-            <a style={{ textDecoration: 'none' }} href={'mailto:' + email} target='_blank' rel="noreferrer">
-                <Title order={6} sx={{ fontWeight: 600, fontSize: '1rem' }}>{email}</Title>
-            </a>
+            <Title order={4} sx={{ fontWeight: 400, fontSize: '1.5rem' }}>
+                <a style={{ textDecoration: 'none', color: 'inherit' }} href={website} target='_blank' rel="noreferrer">
+                    {name}
+                </a>
+            </Title>
+            <Title order={6} sx={{ fontWeight: 600, fontSize: '1rem' }}>
+                <a style={{ textDecoration: 'none' }} href={'mailto:' + email} target='_blank' rel="noreferrer">
+                    {email}
+                </a>
+            </Title>
             {/* <Text c="dimmed">{subtitle}</Text> */}
         </Grid.Col>
         <Grid.Col span={6} sx={{ textAlign: 'right', display: 'flex', flexWrap: 'wrap', gap: 5, justifyContent: 'flex-end' }}>
@@ -152,6 +156,7 @@ function Education() {
     const showClasses = false;
     const place = `Kent State University`;
     const degree = `Bachelor of Science in Computer Science`;
+    const href = `https://catalog.kent.edu/colleges/as/cs/computer-science-bs/`;
     // const degree = `B.S. Computer Science`
     const gpa = `3.82`;
     const when = `Fall 2022`;
@@ -257,7 +262,11 @@ function Education() {
     return <Section title='Education'>
         <Grid pb={8} pt={4}>
             <Grid.Col span={11} pt={4} pb={0}>
-                <Text fz='sm'>{degree}</Text>
+                <Text fz='sm'>
+                    {href ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
+                        {degree} {SHOW_LINKS && <LinkIcon sx={{}} />}
+                    </a> : degree}
+                </Text>
             </Grid.Col>
             <Grid.Col span={9} pb={0} pt={0}>
                 <Text fz='sm' fw={'lighter'}>{place}</Text>
@@ -308,12 +317,13 @@ function Education() {
                 {experiences.map(({ title, subtitle, when, href, about }, i) => (
                     <Grid key={title} mb={i < (experiences.length - 1) ? 'sm' : 4}>
                         <Grid.Col span={8} pb={0}>
-                            <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
-                                <Text fz={'sm'}>
+
+                            <Text fz={'sm'}>
+                                {/* <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
                                     {title}
-                                    {/* {SHOW_LINKS && href && <LinkIcon sx={{}} />} */}
-                                </Text>
-                            </a>
+                                </a> */}
+                                {title}
+                            </Text>
                         </Grid.Col>
                         <Grid.Col span={12 - 8} pb={0}>
                             <Text fz={'xs'} sx={{ textAlign: 'right' }}>
@@ -321,9 +331,11 @@ function Education() {
                             </Text>
                         </Grid.Col>
                         <Grid.Col span={7} py={0}>
-                            {href && subtitle ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
-                                <Text fz={'xs'} fw={'lighter'}>{subtitle} {SHOW_LINKS && <LinkIcon sx={{}} />}</Text>
-                            </a> : <Text fz={'xs'} fw={'lighter'}>{subtitle}</Text>}
+                            {subtitle && <Text fz={'xs'} fw={'lighter'}>
+                                {href ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
+                                    {subtitle} {SHOW_LINKS && <LinkIcon sx={{}} />}
+                                </a> : subtitle}
+                            </Text>}
                         </Grid.Col>
                         <Grid.Col span={12 - 7} py={0}>
 
@@ -437,9 +449,11 @@ function Experience() {
                     </Text>
                 </Grid.Col>
                 <Grid.Col span={extraSubtitle ? 12 : 7} py={0} >
-                    {href ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
-                        <Text fz={'sm'} fw={200}>{subtitle} {SHOW_LINKS && <LinkIcon sx={{}} />} </Text>
-                    </a> : <Text fz={'sm'}>{subtitle}</Text>}
+                    {subtitle && <Text fz={'sm'} fw={200}>
+                        {href ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
+                            {subtitle} {SHOW_LINKS && <LinkIcon sx={{}} />}
+                        </a> : subtitle}
+                    </Text>}
                 </Grid.Col>
                 {!extraSubtitle && <Grid.Col span={12 - 7} py={0}>
 
@@ -453,7 +467,7 @@ function Experience() {
                             borderColor: 'red',
                             borderBottom: i !== (experiences.length - 1) ? 'dashed 1px' : undefined,
                         }}>
-                            {about.map(o => <List.Item key={o} fz={'xs'}>{o}</List.Item>)}
+                            {(about as any).map(o => <List.Item key={o} fz={'xs'}>{o}</List.Item>)}
                         </List>
                     ))}
                 </Grid.Col>
@@ -551,7 +565,11 @@ function Projects() {
         {projects.map(({ title, subtitle, about, href, when }, i) => {
             const result = <Grid>
                 <Grid.Col span={8}>
-                    <Text>{title} {SHOW_LINKS && href && <LinkIcon sx={{}} />} </Text>
+                    <Text>
+                        {href ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
+                            {title} {SHOW_LINKS && href && <LinkIcon sx={{}} />}
+                        </a> : title}
+                    </Text>
                 </Grid.Col>
                 <Grid.Col span={12 - 8} sx={{ textAlign: 'right' }} pr={10}>
                     <Text fz='xs' dangerouslySetInnerHTML={{ __html: when }} />
@@ -569,9 +587,10 @@ function Projects() {
                     borderColor: 'red',
                     borderBottom: i !== (projects.length - 1) ? 'dashed 1px' : undefined,
                 }}>
-                    {href ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
+                    {/* {href ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
                         {result}
-                    </a> : result}
+                    </a> : result} */}
+                    {result}
                     {about && (
                         !isArray(about) && typeof about === 'string' ? <Text fz='xs' sx={{ textIndent }}>
                             {about}
@@ -861,12 +880,14 @@ function Awards() {
             },
         ];
     return <Section title='Honors & Awards' pt={4}>
-        {awards.map(({ title, subtitle, href, when }) => (
-            <Grid key={title} mb={1}>
+        {awards.map(({ title, subtitle, href, when }, i) => (
+            <Grid key={i} mb={1}>
                 <Grid.Col span={when.includes('-') ? 8 : 10} pt={4} pb={0} sx={{}}>
-                    {href ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
-                        <Text fz={'sm'}>{title} {SHOW_LINKS && href && <LinkIcon sx={{}} />} </Text>
-                    </a> : <Text>{title}</Text>}
+                    <Text fz={'sm'}>
+                        {href ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
+                            {title} {SHOW_LINKS && href && <LinkIcon sx={{}} />}
+                        </a> : title}
+                    </Text>
                 </Grid.Col>
                 <Grid.Col span={12 - (when.includes('-') ? 8 : 10)} pt={4} pb={0} sx={{}}>
                     <Text fz='xs' sx={{ textAlign: 'right' }} dangerouslySetInnerHTML={{ __html: when.split('-').join('&ndash;') }} />

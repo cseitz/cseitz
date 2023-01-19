@@ -56,4 +56,7 @@
         "**/build": true,
         // "**/dist": true,
     },
+    "yaml.schemas": {
+        "https://json.schemastore.org/github-workflow.json": "file:///c%3A/Users/Chris/Documents/Code/Repositories/Chris/2023/cseitz/.github/workflows/deploy.yml"
+    },
 }
