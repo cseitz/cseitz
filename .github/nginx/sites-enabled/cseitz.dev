@@ -6,19 +6,18 @@ server {
     server_name dev.cseitz.dev;
     # return 302 https://$host$request_uri;
     proxy_intercept_errors on;
-    include includes/cseitz/errors;
-    include includes/cseitz/web-proxy;
+    include includes/repos/cseitz/errors;
+    include includes/repos/cseitz/web-proxy;
 }
 
 
 server {
     listen 443 ssl;
     server_name dev.cseitz.dev;
-    ssl_certificate "/root/.acme.sh/cseitz.dev/cseitz.dev.fullchain.cer";
-    ssl_certificate_key "/root/.acme.sh/cseitz.dev/cseitz.dev.key";
+    include includes/ssl/cseitz.dev;
     proxy_intercept_errors on;
-    include includes/cseitz/errors;
-    # include includes/cseitz/api-proxy;
-    include includes/cseitz/web-proxy;
+    include includes/repos/cseitz/errors;
+    # include includes/repos/cseitz/api-proxy;
+    include includes/repos/cseitz/web-proxy;
 }
 
