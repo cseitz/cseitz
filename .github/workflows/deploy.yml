@@ -113,15 +113,16 @@ jobs:
           privateKey: ${{ secrets.key || inputs.key }}
           local: .turbo
           remote: ${{ inputs.directory }}/node_modules/.cache/turbo
-      # - name: Deploy
-      #   uses: garygrossgarten/github-action-ssh@release
-      #   with:
-      #     host: ${{ secrets.host || inputs.host }}
-      #     port: ${{ secrets.port || inputs.port }}
-      #     username: ${{ secrets.user || inputs.user }}
-      #     privateKey: ${{ secrets.key || inputs.key }}
-      #     command: |
-      #       cd ${{ inputs.directory }}
-      #       export TERM=xterm-256color
-      #       export FORCE_COLOR=1
-      #       bash docker/server/scripts/deploy/${{ matrix.project }}.sh
+      - name: Deploy
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          host: ${{ secrets.host || inputs.host }}
+          port: ${{ secrets.port || inputs.port }}
+          username: ${{ secrets.user || inputs.user }}
+          privateKey: ${{ secrets.key || inputs.key }}
+          command: |
+            cd ${{ inputs.directory }}
+            export TERM=xterm-256color
+            export FORCE_COLOR=1
+            export PM2_PREFIX=cseitz
+            PROJECT=${{ matrix.project }} bash .github/scripts/deploy.sh
