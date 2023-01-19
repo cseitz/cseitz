@@ -1,28 +1,34 @@
-import { MantineThemeOverride } from '@mantine/core';
-import { NextPageContext } from 'next';
-import { AppContext, AppProps } from 'next/app';
-import { ThemeProvider } from '../utils/mantine';
+import { NotificationsProvider } from '@mantine/notifications';
+import { withMantine } from '../utils/mantine';
+import { createContext } from 'react';
+import { Router } from 'next/router';
+import { AppProps } from 'next/app';
 
 
-function App(props: InitialProps) {
+declare global {
+    export interface AppInitialProps extends AppProps {
+        pageProps: AppInitialPageProps
+    }
+    export interface AppInitialPageProps {
+
+    }
+}
+
+export const InitialRouter = createContext<Router>(null as any);
+
+function App(props: AppInitialProps) {
     const { Component, pageProps } = props;
 
-    const { colorScheme, firstVisit } = props;
-    const theme: MantineThemeOverride = {
-
-    }
-
-    return <ThemeProvider {...{ theme, colorScheme, firstVisit }}>
-        {/* <Navigation /> */}
-        <Component {...pageProps} />
-    </ThemeProvider>
+    return <InitialRouter.Provider value={props.router}>
+        <NotificationsProvider>
+            <Component {...pageProps} />
+        </NotificationsProvider>
+    </InitialRouter.Provider>
 }
 
-type InitialProps = AppProps & Awaited<ReturnType<typeof App.getInitialProps>>;
-App.getInitialProps = async function (ctx: AppContext) {
-    return {
-        ...ThemeProvider.getInitialProps(ctx),
-    }
-}
 
-export default App;
+export default withMantine(App, {
+    cookie: `cseitz-color-scheme`,
+    withGlobalStyles: true,
+    withNormalizeCSS: true,
+})

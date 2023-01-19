@@ -1,75 +1,141 @@
-import { ColorScheme, ColorSchemeProvider, DefaultMantineColor, MantineProvider, MantineThemeOverride, Tuple, useMantineTheme } from '@mantine/core';
+import { MantineProviderProps, ColorSchemeProvider, ColorScheme, MantineProvider, MantineThemeOverride } from '@mantine/core';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getCookie, setCookie } from 'cookies-next';
-import { merge } from 'lodash';
+import { useMediaQuery } from '@mantine/hooks';
 import { AppContext } from 'next/app';
-import { useEffect, useMemo, useState } from 'react';
-import { useMediaQuery } from '../hooks';
 
 
-type ExtendedCustomColors = DefaultMantineColor
-    | 'background';
 
-declare module '@mantine/core' {
-    export interface MantineThemeColorsOverride {
-        colors: Record<ExtendedCustomColors, Tuple<string, 10>>;
+declare global {
+    interface AppInitialPageProps {
+        mantine: MantineInitialProps & {
+            colorScheme: ColorScheme
+        }
     }
 }
 
-const FORCED_COLOR_SCHEME: ColorScheme | null = 'light';
 
-var dynamicColorScheme = false;
-export function ThemeProvider(props: { theme: Omit<MantineThemeOverride, 'colorScheme'>, colorScheme: ColorScheme, firstVisit?: boolean, children: any }) {
-    const [colorScheme, setColorScheme] = useState(props.colorScheme);
-    const toggleColorScheme = (value?: ColorScheme) => {
-        const nextColorScheme = value || (colorScheme === 'dark' ? 'light' : 'dark');
-        setCookie('color-scheme', nextColorScheme, { maxAge: 60 * 60 * 24 * 30, });
+
+type WithMantineProps = Omit<MantineProviderProps, 'children'> & {
+    colorScheme?: ColorScheme,
+    /** Cookie used to store the user's preferred color scheme */
+    cookie?: string,
+}
+
+type MantineInitialProps = {
+    savedColorScheme?: ColorScheme
+}
+
+
+export function withMantine(App: (props: any) => JSX.Element, options: WithMantineProps) {
+    const {
+        colorScheme: forcedColorScheme,
+        cookie = 'color-scheme',
+        ...providerProps
+    } = options;
+
+    function Provider(props: any) {
+        // console.log('mantine provider', props);
+
+        const colorProps = useDynamicColorScheme(props?.pageProps?.mantine, {
+            forcedColorScheme,
+            cookie,
+        })
+
+        // @ts-ignore
+        const theme = useMemo<MantineThemeOverride>(() => {
+            if (providerProps.theme && typeof providerProps.theme === 'function') {
+                return (...args: any) => {
+                    return {
+                        ...(providerProps as any).theme(...args),
+                        colorScheme: colorProps.colorScheme,
+                    }
+                };
+            }
+            return {
+                ...(providerProps.theme || {}),
+                colorScheme: colorProps.colorScheme,
+            }
+        }, [colorProps.colorScheme, providerProps.theme])
+
+        return <ColorSchemeProvider {...colorProps}>
+            <MantineProvider {...providerProps} theme={theme}>
+                <App {...props} />
+            </MantineProvider>
+        </ColorSchemeProvider>
+    }
+
+    async function getInitialProps(ctx: AppContext) {
+        const inherited = 'getInitialProps' in App
+            ? await (App as any).getInitialProps(ctx) : {};
+
+        const savedCookie = getCookie(cookie, ctx.ctx);
+        const mantine: MantineInitialProps = {
+            savedColorScheme: savedCookie as any,
+        }
+
+        return {
+            ...inherited,
+            pageProps: {
+                ...(inherited?.pageProps || {}),
+                mantine,
+            }
+        }
+
+    }
+
+    return Object.assign(Provider, {
+        getInitialProps,
+    })
+}
+
+
+function useDynamicColorScheme(props: MantineInitialProps, config: {
+    forcedColorScheme?: ColorScheme,
+    cookie: string
+}) {
+    const { savedColorScheme } = props || {};
+    const { forcedColorScheme, cookie } = config;
+
+    const [colorScheme, setColorScheme] = useState<ColorScheme>(
+        forcedColorScheme || savedColorScheme || 'light'
+    );
+
+    const toggleColorScheme = useCallback((value?: ColorScheme) => {
+        const nextColorScheme = value || (colorScheme === 'dark' ? 'light' : 'light');
+        setCookie(cookie, nextColorScheme);
         setColorScheme(nextColorScheme);
-    };
+    }, [colorScheme])
 
-    const preferredColorScheme: ColorScheme = useMediaQuery('(prefers-color-scheme: dark)') ? 'dark' : 'light';
+    const devicePreference: ColorScheme = useMediaQuery('(prefers-color-scheme: dark)') ? 'dark' : 'light';
     const desiredColorScheme = useMemo<ColorScheme>(() => {
-        const desired = getCookie('color-scheme');
-        if (FORCED_COLOR_SCHEME) return FORCED_COLOR_SCHEME;
+        const desired = getCookie(cookie);
         if (desired === 'dark') return 'dark';
         if (desired === 'light') return 'light';
-        return preferredColorScheme;
-    }, [preferredColorScheme]);
-    if (typeof window !== 'undefined' && !dynamicColorScheme) {
-        dynamicColorScheme = true;
-        if (colorScheme !== desiredColorScheme) {
-            toggleColorScheme(desiredColorScheme);
-        }
-    }
+        return devicePreference || 'light';
+    }, [devicePreference]);
 
-    const themes: Record<ColorScheme, MantineThemeOverride> = {
-        light: {},
-        dark: {}
-    }
-
-    const theme: MantineThemeOverride = merge({ ...props.theme }, { colorScheme, ...themes[colorScheme] });
-
-    /** Assign color scheme on first visit render */
-    const [isThemeSet, setIsThemeSet] = useState(!props.firstVisit);
+    const [isThemeSet, setIsThemeSet] = useState(savedColorScheme !== undefined);
     useEffect(() => {
         if (isThemeSet) return;
-        if (!props.firstVisit) return;
+        if (forcedColorScheme) return;
+        if (savedColorScheme !== undefined) return;
         if (colorScheme == desiredColorScheme) return;
         setIsThemeSet(true);
         toggleColorScheme(desiredColorScheme);
-    }, [colorScheme, desiredColorScheme])
+    }, [colorScheme, desiredColorScheme]);
 
-    return <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
-        <MantineProvider withGlobalStyles withNormalizeCSS theme={theme}>
-            {props.children}
-        </MantineProvider>
-    </ColorSchemeProvider>
-}
-
-ThemeProvider.getInitialProps = ({ ctx }: AppContext) => {
-    const cookie = getCookie('color-scheme', ctx);
-    const colorScheme: ColorScheme = cookie === 'dark' ? 'dark' : 'light';
-    return {
-        firstVisit: cookie === undefined,
-        colorScheme: FORCED_COLOR_SCHEME || colorScheme,
+    if (props) {
+        // @ts-ignore
+        props.colorScheme = colorScheme;
     }
+
+    // console.log({ colorScheme, savedColorScheme })
+
+    return {
+        colorScheme,
+        toggleColorScheme,
+    }
+
 }
+

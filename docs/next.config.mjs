@@ -17,7 +17,8 @@ const serverRuntimeConfig = {
 
 /** @type {import('./config').PublicRuntimeConfig} */
 const publicRuntimeConfig = {
-
+    email: process.env.RESUME_EMAIL,
+    phone: process.env.RESUME_PHONE,
 }
 
 /** @type {import('next').NextConfig} */

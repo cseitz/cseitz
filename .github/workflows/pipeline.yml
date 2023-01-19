@@ -1,0 +1,42 @@
+name: CI/CD
+
+on:
+  workflow_dispatch:
+    inputs:
+      deploy:
+        type: boolean
+        description: Deploy to Production
+  push:
+
+jobs:
+  lint:
+    name: Lint
+    uses: cseitz/cseitz/.github/workflows/lint.yml@main
+
+  build:
+    name: Build
+    needs: [lint]
+    uses: cseitz/cseitz/.github/workflows/build.yml@main
+
+  deploy:
+    name: Deploy
+    if: github.ref == 'refs/heads/main'
+    needs: [build]
+    uses: cseitz/cseitz/.github/workflows/deploy.yml@main
+    secrets:
+      key: ${{ secrets.DEPLOY_KEY }}
+      host: ${{ secrets.DEPLOY_HOST }}
+    with:
+      directory: /opt/cseitz/cseitz
+      force: ${{ !!(github.event.inputs.deploy || false) }}
+
+  # health:
+  #   name: Health
+  #   needs: [build, publish, deploy]
+  #   if: ${{ always() }}
+  #   uses: cseitz/cseitz/.github/workflows/health.yml@main
+  #   secrets:
+  #     key: ${{ secrets.DEPLOY_KEY }}
+  #     host: ${{ secrets.DEPLOY_HOST }}
+  #     port: ${{ secrets.DEPLOY_PORT }}
+  #     user: ${{ secrets.DEPLOY_USER }}
