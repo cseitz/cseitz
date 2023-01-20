@@ -54,7 +54,7 @@ async function getFiles() {
         const __dest = resolve(isWWW ? __www : __nginx, __relative);
         const __tmp = resolve(__temp, isWWW ? 'www' : 'nginx', __relative);
         // await mkdir(dirname(__tmp), { recursive: true })
-        console.log({ file, relative: __relative, dest: __dest, temp: __tmp })
+        // console.log({ file, relative: __relative, dest: __dest, temp: __tmp })
         files.push({
             config: file,
             nginx: __dest,
