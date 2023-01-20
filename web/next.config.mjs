@@ -62,3 +62,4 @@ export default withBundleAnalyzer(
             resolveSymlinks: true
         })(nextConfig)
 );
+
