@@ -40,5 +40,5 @@ fi
 
 # Update NGINX configuration
 cd $REPO
-npm run gh nginx
+sudo npm run gh nginx
 
