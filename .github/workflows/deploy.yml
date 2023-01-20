@@ -124,5 +124,5 @@ jobs:
             cd ${{ inputs.directory }}
             export TERM=xterm-256color
             export FORCE_COLOR=1
-            export PM2_PREFIX=cseitz
+            export PM2_NAME=${{ matrix.project }}
             PROJECT=${{ matrix.project }} bash .github/scripts/deploy.sh
