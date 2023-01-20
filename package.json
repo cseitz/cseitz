@@ -15,6 +15,7 @@
     "start": "cross-env FORCE_COLOR=1 turbo run start --parallel",
     "build": "cross-env FORCE_COLOR=1 turbo run build --parallel",
     "lint": "cross-env FORCE_COLOR=1 turbo run lint",
+    "gh": "cd .github && npm run --",
     "exports": "exports"
   },
   "devDependencies": {

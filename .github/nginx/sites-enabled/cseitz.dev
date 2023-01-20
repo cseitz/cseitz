@@ -6,8 +6,8 @@ server {
     server_name dev.cseitz.dev;
     # return 302 https://$host$request_uri;
     proxy_intercept_errors on;
-    include includes/repos/cseitz/errors;
-    include includes/repos/cseitz/web-proxy;
+    include includes/cseitz/errors;
+    include includes/cseitz/proxy-web;
 }
 
 
@@ -16,8 +16,8 @@ server {
     server_name dev.cseitz.dev;
     include includes/ssl/cseitz.dev;
     proxy_intercept_errors on;
-    include includes/repos/cseitz/errors;
-    # include includes/repos/cseitz/api-proxy;
-    include includes/repos/cseitz/web-proxy;
+    include includes/cseitz/errors;
+    # include includes/cseitz/proxy-api;
+    include includes/cseitz/proxy-web;
 }
 

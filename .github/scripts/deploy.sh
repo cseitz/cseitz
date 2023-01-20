@@ -36,3 +36,9 @@ if [ -d ".next-build" ]; then
     fi
 
 fi
+
+
+# Update NGINX configuration
+cd $REPO
+npm run gh nginx
+
