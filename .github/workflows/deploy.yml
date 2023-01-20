@@ -122,7 +122,4 @@ jobs:
           privateKey: ${{ secrets.key || inputs.key }}
           command: |
             cd ${{ inputs.directory }}
-            export TERM=xterm-256color
-            export FORCE_COLOR=1
-            export PM2_NAME=${{ matrix.project }}
-            PROJECT=${{ matrix.project }} bash .github/scripts/deploy.sh
+            sudo FORCE_COLOR=1 TERM=xterm-256color PM2_NAME=${{ matrix.project }} PROJECT=${{ matrix.project }} bash .github/scripts/deploy.sh
