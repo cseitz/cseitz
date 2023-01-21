@@ -1,6 +1,7 @@
 import { ActionIcon, Box, Button, Container, Divider, Grid, Group, Paper, Portal, Stack, Text, ThemeIcon, Title, Tooltip, useMantineColorScheme, useMantineTheme } from '@mantine/core';
 import { useElementSize, useIntersection, useWindowScroll } from '@mantine/hooks';
 import { IconSun, IconMoonStars } from '@tabler/icons';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 
@@ -8,6 +9,9 @@ import { useEffect, useRef, useState } from 'react';
 export default function Homepage() {
     return <Container maw={800}>
         <Box sx={{}}>
+            <Head>
+                <title>Chris Seitz</title>
+            </Head>
             <Navbar />
             <Stack spacing={'md'} pb={200}>
                 <Sample />
