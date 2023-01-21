@@ -56,7 +56,8 @@ function Navbar() {
                 position: isVisible ? 'absolute' : 'fixed',
                 marginTop: isVisible ? undefined : -Math.min(offset + height, scroll.y),
                 width: width + (16 * (!isVisible ? 2 : 0)),
-                marginLeft: -16 * (!isVisible ? 1 : 0)
+                marginLeft: -16 * (!isVisible ? 1 : 0),
+                overflow: !isReady ? 'hidden' : undefined,
             }}>
                 <Paper sx={{ transition: isReady ? 'all 0.1s, background-color 0s, border-color 0s' : undefined }} mt={isVisible ? 'lg' : 'lg'} withBorder={!isVisible} p={!isVisible ? 'sm' : undefined}>
                     <Box sx={{
