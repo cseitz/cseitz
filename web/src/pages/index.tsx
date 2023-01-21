@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Button, Container, Divider, Grid, Group, Paper, Portal, Stack, Text, ThemeIcon, Title, useMantineColorScheme, useMantineTheme } from '@mantine/core';
+import { ActionIcon, Box, Button, Container, Divider, Grid, Group, Paper, Portal, Stack, Text, ThemeIcon, Title, Tooltip, useMantineColorScheme, useMantineTheme } from '@mantine/core';
 import { useElementSize, useIntersection, useWindowScroll } from '@mantine/hooks';
 import { IconSun, IconMoonStars } from '@tabler/icons';
 import { useRouter } from 'next/router';
@@ -85,14 +85,16 @@ function Navbar() {
                         </Grid.Col>
                         <Grid.Col span={4} sx={{ height: '100%' }}>
                             <Group sx={{ justifyContent: 'right', height: '100%' }} align={'center'}>
-                                <ActionIcon
-                                    variant="outline"
-                                    color={dark ? 'yellow' : 'blue'}
-                                    onClick={() => toggleColorScheme()}
-                                    title="Toggle color scheme"
-                                >
-                                    {dark ? <IconSun size={18} /> : <IconMoonStars size={18} />}
-                                </ActionIcon>
+                                <Tooltip label={`Switch to ${dark ? 'Light' : 'Dark'} mode`}>
+                                    <ActionIcon
+                                        variant="subtle"
+                                        // color={dark ? 'blue' : 'blue'}
+                                        onClick={() => toggleColorScheme()}
+                                        title="Toggle color scheme"
+                                    >
+                                        {dark ? <IconSun size={18} /> : <IconMoonStars size={18} />}
+                                    </ActionIcon>
+                                </Tooltip>
                             </Group>
                         </Grid.Col>
                     </Grid>
