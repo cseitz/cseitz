@@ -43,7 +43,7 @@ function Navbar() {
         if (!isReady && router.isReady) {
             setTimeout(() => {
                 setIsReady(true);
-            }, 1000)
+            }, 10)
         }
     }, [router.isReady])
 
@@ -59,7 +59,7 @@ function Navbar() {
                 marginLeft: -16 * (!isVisible ? 1 : 0),
                 overflow: !isReady ? 'hidden' : undefined,
             }}>
-                <Paper sx={{ transition: isReady ? 'all 0.1s, background-color 0s, border-color 0s' : undefined }} mt={isVisible ? 'lg' : 'lg'} withBorder={!isVisible} p={!isVisible ? 'sm' : undefined}>
+                <Paper sx={{ transition: isReady ? 'all 0.1s, background-color 0s, border-color 0s' : 'opacity 0.1s', opacity: isReady ? 1 : 0 }} mt={isVisible ? 'lg' : 'lg'} withBorder={!isVisible} p={!isVisible ? 'sm' : undefined}>
                     <Box sx={{
                         transition: isReady ? 'all 0.1s' : undefined,
                         opacity: isVisible ? 0 : 0.8,
