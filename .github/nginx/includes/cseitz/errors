@@ -4,6 +4,6 @@
 
 error_page 502 /offline.html;
 location /offline.html {
-    root /var/www/nginx;
+    root /var/www/nginx/cseitz;
     internal;
 }
