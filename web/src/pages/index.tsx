@@ -73,7 +73,7 @@ export default function Homepage() {
                                             <Icon scale='80%' color={dark ? undefined : 'black'} />
                                         </ActionIcon> */}
                                         <Button size='sm' variant={dark ? 'subtle' : 'default'} sx={{ border: 0, color: onlyIf(dark, 'white') }} leftIcon={<Icon color={onlyIf(!dark, 'black')} />}>
-                                            {label}2
+                                            {label}
                                         </Button>
                                     </Link>
                                 </Tooltip>
