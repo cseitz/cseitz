@@ -65,14 +65,21 @@ export default function Homepage() {
                         <Title order={isMobile ? 4 : 3} fw={'lighter'}>Full-Stack TypeScript & React Developer</Title>
                     </Grid.Col>
                     <Grid.Col span={isMobile ? 12 : 5} sx={{ display: 'flex', justifyContent: isMobile ? 'center' : 'right', alignItems: 'center' }}>
-                        <Group sx={{ justifyContent: isMobile ? 'center' : 'right' }} maw={onlyIf(isMobile, '60vw')} spacing={onlyIf(isMobile, 0)}>
+                        <Group sx={{ justifyContent: isMobile ? 'center' : 'right' }} maw={onlyIf(isMobile, '60vw')} spacing={'0.5em' as any}>
                             {links.map(({ icon: Icon, label, href }) => (
-                                <Tooltip label={label} key={href}>
+                                <Tooltip label={href} key={href}>
                                     <Link href={href} target='_blank' style={{ color: 'inherit' }}>
                                         {/* <ActionIcon size='lg'>
                                             <Icon scale='80%' color={dark ? undefined : 'black'} />
                                         </ActionIcon> */}
-                                        <Button size='sm' variant={dark ? 'subtle' : 'default'} sx={{ border: 0, color: onlyIf(dark, 'white') }} leftIcon={<Icon color={onlyIf(!dark, 'black')} />}>
+                                        {/* <Button size='sm' variant={dark ? 'subtle' : 'default'} sx={{ border: 0, color: onlyIf(dark, 'white') }} leftIcon={<Icon color={onlyIf(!dark, 'black')} />}>
+                                            {label}
+                                        </Button> */}
+                                        <Button size='sm' variant={dark ? 'default' : 'subtle'} sx={{
+                                            border: 0, 
+                                            color: dark ? 'white' : 'black', //onlyIf(dark, 'white'), 
+                                            backgroundColor:  onlyIf(!dark, theme.colors.gray[0])
+                                        }} leftIcon={<Icon color={onlyIf(!dark, 'black')} />}>
                                             {label}
                                         </Button>
                                     </Link>
@@ -83,17 +90,20 @@ export default function Homepage() {
                 </Grid>
 
             </Header>
-            <Box py={'xl'}>
+            {/* <Box py={'xl'}>
                 <Divider />
             </Box>
             <Stack spacing={'md'} pb={200}>
+
+            </Stack> */}
+            {/* <Stack spacing={'md'} pb={200}>
                 <Sample />
                 <Divider />
                 <Sample />
                 <Divider />
                 <Sample />
                 <Divider />
-            </Stack>
+            </Stack> */}
         </Box>
     </Container>
 }
@@ -187,7 +197,9 @@ function Header(props: { children: any }) {
                         <Grid.Col span={8} sx={{}}>
                             <Group>
                                 <Button variant='subtle'>Home</Button>
+                                <Button variant='subtle'>Resume</Button>
                                 <Button variant='subtle'>Portfolio</Button>
+                                <Button variant='subtle'>Blog</Button>
                             </Group>
                         </Grid.Col>
                         <Grid.Col span={4} sx={{ height: '100%' }}>
