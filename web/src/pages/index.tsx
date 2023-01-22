@@ -1,18 +1,91 @@
-import { ActionIcon, Box, Button, Container, Divider, Grid, Group, Paper, Portal, Stack, Text, ThemeIcon, Title, Tooltip, useMantineColorScheme, useMantineTheme } from '@mantine/core';
-import { useElementSize, useIntersection, useWindowScroll } from '@mantine/hooks';
+import { ActionIcon, Affix, Box, Button, Container, Divider, Flex, Grid, Group, Paper, Portal, Stack, Text, ThemeIcon, Title, Tooltip, Transition, useMantineColorScheme, useMantineTheme } from '@mantine/core';
+import { useElementSize, useIntersection, useMediaQuery, useWindowScroll } from '@mantine/hooks';
 import { IconSun, IconMoonStars } from '@tabler/icons';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
+import { faGithub } from '@cseitz/icons-brands';
+import { faLinkedinIn } from '@cseitz/icons-brands';
+import { faEnvelope } from '@cseitz/icons-regular/envelope';
+import { faArrowUp } from '@cseitz/icons-regular/arrow-up';
+import { Icon } from '@cseitz/icons';
+import Link from 'next/link';
 
+const GithubIcon = Icon(faGithub);
+const LinkedInIcon = Icon(faLinkedinIn);
+const MailIcon = Icon(faEnvelope);
+const ArrowUpIcon = Icon(faArrowUp);
+
+/** Shorthand for `check ? value : undefined`
+ * - Used frequently when the JSX default value is desired unless a specific condition is met.
+ * - Avoids frequent retyping of `: undefined` in dozens of conditionals in JSX properties.
+ * ```tsx
+ * <Element padding={isMobile ? 20 : undefined} color={darkMode ? 'red' : undefined} />
+ * <Element padding={onlyif(isMobile, 20)} color={onlyIf(darkmode, 'red')} />
+ * ```
+ */
+function onlyIf<T>(check: boolean, value: T) {
+    if (check) return value;
+    return undefined;
+}
+
+const links = [
+    {
+        label: 'Github',
+        icon: GithubIcon,
+        href: 'https://github.com/cseitz',
+    },
+    {
+        label: 'LinkedIn',
+        icon: LinkedInIcon,
+        href: 'https://linkedin.com/in/seitzc',
+    },
+    {
+        label: 'cseitz.work@gmail.com',
+        icon: MailIcon,
+        href: 'mailto:cseitz.work@gmail.com',
+    },
+]
 
 export default function Homepage() {
-    return <Container maw={800}>
+    const width = 800;
+    const theme = useMantineTheme();
+    const dark = theme.colorScheme === 'dark';
+    const isMobile = useMediaQuery(`(max-width: ${width}px)`);
+
+    return <Container maw={width}>
         <Box sx={{}}>
             <Head>
                 <title>Chris Seitz</title>
             </Head>
-            <Navbar />
+            <Header>
+                <Grid>
+                    <Grid.Col span={isMobile ? 12 : 7} sx={{ textAlign: isMobile ? 'center' : 'left' }}>
+                        <Title>Chris Seitz</Title>
+                        <Title order={isMobile ? 4 : 3} fw={'lighter'}>Full-Stack TypeScript & React Developer</Title>
+                    </Grid.Col>
+                    <Grid.Col span={isMobile ? 12 : 5} sx={{ display: 'flex', justifyContent: isMobile ? 'center' : 'right', alignItems: 'center' }}>
+                        <Group sx={{ justifyContent: isMobile ? 'center' : 'right' }} maw={onlyIf(isMobile, '60vw')} spacing={onlyIf(isMobile, 0)}>
+                            {links.map(({ icon: Icon, label, href }) => (
+                                <Tooltip label={label} key={href}>
+                                    <Link href={href} target='_blank' style={{ color: 'inherit' }}>
+                                        {/* <ActionIcon size='lg'>
+                                            <Icon scale='80%' color={dark ? undefined : 'black'} />
+                                        </ActionIcon> */}
+                                        <Button size='sm' variant={dark ? 'subtle' : 'default'} sx={{ border: 0, color: onlyIf(dark, 'white') }} leftIcon={<Icon color={onlyIf(!dark, 'black')} />}>
+                                            {label}
+                                        </Button>
+                                    </Link>
+                                </Tooltip>
+                            ))}
+                        </Group>
+                    </Grid.Col>
+                </Grid>
+
+            </Header>
+            <Box py={'xl'}>
+                <Divider />
+            </Box>
             <Stack spacing={'md'} pb={200}>
                 <Sample />
                 <Divider />
@@ -26,7 +99,30 @@ export default function Homepage() {
 }
 
 
-function Navbar() {
+function ScrollUp(props: { visible: boolean }) {
+    const theme = useMantineTheme();
+    const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.md}px)`);
+    const [scroll, scrollTo] = useWindowScroll();
+
+    const scrollToTop = () => {
+        scrollTo({ x: 0, y: 0 })
+    }
+
+    return <Affix position={{ bottom: '1em', right: '1em' }}>
+        <Transition transition={'slide-up'} mounted={props.visible}>
+            {(transitionStyles) => (
+                <Tooltip label="Scroll to Top" position='left'>
+                    <Button style={transitionStyles} variant={isMobile ? 'default' : 'subtle'} onClick={scrollToTop}>
+                        <ArrowUpIcon />
+                    </Button>
+                </Tooltip>
+            )}
+        </Transition>
+    </Affix>
+}
+
+
+function Header(props: { children: any }) {
     const containerRef = useRef();
     const [scroll] = useWindowScroll();
     const { ref: sizeRef, height, width } = useElementSize();
@@ -34,12 +130,15 @@ function Navbar() {
         root: containerRef.current,
         threshold: 1,
     })
-    const offset = 200;
+
+    const isMobile = useMediaQuery(`(max-width: ${width + 100}px)`);
     const isVisible = entry?.isIntersecting === undefined ? true : entry?.isIntersecting;
+    const offset = isMobile ? 40 : 200;
 
     const theme = useMantineTheme();
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
     const dark = colorScheme === 'dark';
+
 
     const [isReady, setIsReady] = useState(false);
     const router = useRouter();
@@ -53,28 +152,31 @@ function Navbar() {
 
     return <Box mb={70}>
         <Box mt={offset} ref={sizeRef}>
-            <Title>Chris Seitz</Title>
+            {props.children}
             <div ref={ref} />
+            <ScrollUp visible={!isVisible} />
             <Box sx={{
-                transition: isReady ? 'width 0.1s, margin-left 0.1s' : undefined,
+                transition: onlyIf(isReady, 'width 0.1s, margin-left 0.1s'),
                 position: isVisible ? 'absolute' : 'fixed',
-                marginTop: isVisible ? undefined : -Math.min(offset + height, scroll.y),
-                width: width + (16 * (!isVisible ? 2 : 0)),
-                marginLeft: -16 * (!isVisible ? 1 : 0),
-                overflow: !isReady ? 'hidden' : undefined,
+                marginTop: onlyIf(!isVisible, -Math.min(offset + height, scroll.y)),
+                width: isMobile ? width : (width + (16 * (!isVisible ? 2 : 0))),
+                marginLeft: onlyIf(!isMobile, (-16 * (!isVisible ? 1 : 0))),
+                overflow: onlyIf(!isReady, 'hidden'),
             }}>
-                <Paper sx={{ transition: isReady ? 'all 0.1s, background-color 0s, border-color 0s' : 'opacity 0.1s', opacity: isReady ? 1 : 0 }} mt={isVisible ? 'lg' : 'lg'} withBorder={!isVisible} p={!isVisible ? 'sm' : undefined}>
+                <Paper sx={{ transition: isReady ? 'all 0.1s, background-color 0s, border-color 0s' : 'opacity 0.1s', opacity: isReady ? 1 : 0 }}
+                    mt={isMobile ? '2em' : 'xl'} withBorder={!isVisible} p={onlyIf(!isVisible, 'sm')}>
                     <Box sx={{
-                        transition: isReady ? 'all 0.1s' : undefined,
+                        transition: onlyIf(isReady, 'all 0.1s'),
                         opacity: isVisible ? 0 : 0.8,
                         position: 'fixed',
-                        borderTop: `${height + 30}px solid ${dark ? theme.colors['dark'][7] : 'white'}`,
+                        borderTop: `${isMobile ? 30 : 60}px solid ${dark ? theme.colors['dark'][7] : 'white'}`,
                         backgroundImage: theme.fn.gradient({
                             from: dark ? theme.colors['dark'][7] : 'white',
                             to: 'rgba(0, 0, 0, 0)',
                             deg: 180,
                         }),
                         top: 0,
+                        // height: height + (isMobile ? -80 : 50 + 70),
                         height: height + 50 + 70,
                         width: '100vw',
                         left: 0,

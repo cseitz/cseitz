@@ -13,6 +13,7 @@
     "envzo": "^1.0.2",
     "@cseitz/icons": "^1.0.2",
     "@cseitz/icons-regular": "^1.0.3",
+    "@cseitz/icons-brands": "^1.0.3",
     "@cseitz/fontawesome-react": "^1.0.37",
     "@cseitz/fontawesome-svg-brands": "^1.0.1",
     "@cseitz/fontawesome-svg-regular": "^1.0.0",
