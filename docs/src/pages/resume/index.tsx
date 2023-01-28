@@ -484,7 +484,7 @@ function Experience() {
 
 function Projects() {
     const bulleted = true;
-    const finalDash = true;
+    const finalDash = false;
     const projects: {
         title: string
         subtitle?: string
