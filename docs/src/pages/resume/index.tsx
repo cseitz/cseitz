@@ -23,7 +23,9 @@ const SHOW_LINKS = true;
 const DASH = `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%2333333326' stroke-width='4' stroke-dasharray='8%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");`
 
 
-const Dashed = () => <DashedDivider span={6} spacing={4} color='gray.2' />;
+const Dashed = (props: DashedDividerProps) => (
+    <DashedDivider span={6} spacing={4} color='gray.2' {...props} />
+);
 
 
 function LinkIcon(props: Parameters<typeof _LinkIcon>[0]) {
@@ -63,7 +65,7 @@ function Header() {
     // const avatar = 'https://thispersondoesnotexist.com/image';
     // const avatar = 'https://media.tenor.com/nCfArwGenA0AAAAd/the-rock-raising-eyebrow.gif';
 
-    return <Grid pb={15 + 15} mt={-30}>
+    return <Grid pb={15} mt={-30}>
         {avatar && <Grid.Col span={2} sx={{}}>
             <Avatar size={60} src={avatar} radius={100} mx='auto' sx={{
                 transform: 'scale(150%)',
@@ -264,7 +266,7 @@ function Education() {
                 // Facilitated club processes, organized annual hackathon, led website development and hosted instructional events at weekly meetings.`
             },
         ]
-    return <Section title='Education'>
+    return <Section title='Education' mb={12}>
         <Grid pb={8} pt={4}>
             <Grid.Col span={11} pt={4} pb={0}>
                 <Text fz='sm'>
@@ -312,15 +314,16 @@ function Education() {
             </Grid.Col> */}
         </Grid>
         <Box>
-            <Box pt={4} mt={4} sx={{
-                borderImageSource: DASH,
-                borderImageSlice: 2,
-                borderImageRepeat: 'round',
-                borderColor: 'red',
-                borderTop: 'dashed 1px',
+            <Box pt={0} mt={4} sx={{
+                // borderImageSource: DASH,
+                // borderImageSlice: 2,
+                // borderImageRepeat: 'round',
+                // borderColor: 'red',
+                // borderTop: 'dashed 1px',
             }}>
-                {experiences.map(({ title, subtitle, when, href, about }, i) => (
-                    <Grid key={title} mb={i < (experiences.length - 1) ? 'sm' : 4}>
+                <Dashed mb={4} />
+                {experiences.map(({ title, subtitle, when, href, about }, i) => (<>
+                    <Grid key={title} mb={i < (experiences.length - 1) ? 4 : 0}>
                         <Grid.Col span={8} pb={0}>
 
                             <Text fz={'sm'}>
@@ -354,17 +357,19 @@ function Education() {
                             ))}
                         </Grid.Col>
                     </Grid>
-                ))}
+                    {i < (experiences.length - 1) && <Dashed mb={4} />}
+                </>))}
             </Box>
-            {showClasses && <Box mt={4} pt={4} sx={{
-                borderImageSource: DASH,
-                borderImageSlice: 2,
-                borderImageRepeat: 'round',
-                borderColor: 'red',
-                borderTop: 'dashed 1px',
+            {showClasses && <Box mt={4} pt={0} sx={{
+                // borderImageSource: DASH,
+                // borderImageSlice: 2,
+                // borderImageRepeat: 'round',
+                // borderColor: 'red',
+                // borderTop: 'dashed 1px',
             }}>
                 {classes.map(o => (
                     <Text fz="xs" key={o.join(' ')} >
+                        <Dashed mb={4} />
                         <div dangerouslySetInnerHTML={{ __html: o.join('	&ndash; ') }} />
                     </Text>
                 ))}
@@ -448,7 +453,7 @@ function Experience() {
                 // + `Utilized PHP and Node.js for backend systems, SQL for databases, and Lua for game features.`,
             },
         ]
-    return <Section title='Experience'>
+    return <Section title='Experience' mb={12}>
         {experiences.map(({ title, subtitle, when, href, about, extraSubtitle }, i) => (
             <Grid key={title}>
                 <Grid.Col span={7} pb={0} sx={{ maxWidth: '65%', flexGrow: 1 }}>
@@ -470,17 +475,18 @@ function Experience() {
 
                 </Grid.Col>}
                 <Grid.Col span={12} pb={0} pt={'0.2em'}>
-                    {about && (typeof about === 'string' ? <Text fz={'xs'} sx={{ textIndent }}>{about}</Text> : (
-                        <List pr={'md'} pb={6} mb={6} sx={{
-                            borderImageSource: DASH,
-                            borderImageSlice: 2,
-                            borderImageRepeat: 'round',
-                            borderColor: 'red',
-                            borderBottom: i !== (experiences.length - 1) ? 'dashed 1px' : undefined,
+                    {about && (typeof about === 'string' ? <Text fz={'xs'} sx={{ textIndent }}>{about}</Text> : (<>
+                        <List pr={'md'} pb={0} mb={6} sx={{
+                            // borderImageSource: DASH,
+                            // borderImageSlice: 2,
+                            // borderImageRepeat: 'round',
+                            // borderColor: 'red',
+                            // borderBottom: i !== (experiences.length - 1) ? 'dashed 1px' : undefined,
                         }}>
                             {(about as any).map(o => <List.Item key={o} fz={'xs'}>{o}</List.Item>)}
                         </List>
-                    ))}
+                        {i !== (experiences.length - 1) && <Dashed mb={6} />}
+                    </>))}
                 </Grid.Col>
             </Grid>
         ))}
@@ -595,12 +601,12 @@ function Projects() {
             </Grid>
 
             return <>
-                <Box pb={6} mb={6} key={title} sx={{
-                    borderImageSource: DASH,
-                    borderImageSlice: 2,
-                    borderImageRepeat: 'round',
-                    borderColor: 'red',
-                    borderBottom: i !== (projects.length - 1 + (finalDash ? 1 : 0)) ? 'dashed 1px' : undefined,
+                <Box pb={0} mb={6} key={title} sx={{
+                    // borderImageSource: DASH,
+                    // borderImageSlice: 2,
+                    // borderImageRepeat: 'round',
+                    // borderColor: 'red',
+                    // borderBottom: i !== (projects.length - 1 + (finalDash ? 1 : 0)) ? 'dashed 1px' : undefined,
                 }}>
                     {/* {href ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
                         {result}
@@ -621,6 +627,7 @@ function Projects() {
                     {about}
                 </Text>} */}
 
+                    {i !== (projects.length - 1 + (finalDash ? 1 : 0)) && <Dashed mt={6} />}
                 </Box>
                 {/* {i !== (projects.length - 1) && (
                     <Divider variant='dashed' mb={6} opacity={0.5} size='sm' />
@@ -772,12 +779,12 @@ function Skills() {
         return <Box {...defaultProps} />
     }
 
-    return <Section title='Skills'>
-        <Box pb={6} sx={{
-            borderImageSource: DASH,
-            borderImageSlice: 2,
-            borderImageRepeat: 'round',
-            borderBottom: 'dashed 1px',
+    return <Section title='Skills' mb={12}>
+        <Box pb={2} sx={{
+            // borderImageSource: DASH,
+            // borderImageSlice: 2,
+            // borderImageRepeat: 'round',
+            // borderBottom: 'dashed 1px',
         }}>
             {programming.map(([title, _score, color, url, icon], i) => {
                 const score = _score - humbleness;
@@ -796,27 +803,30 @@ function Skills() {
                     </Group>
                 </Box>
             })}
-            {Object.entries(sections).slice(0, 1).map(([title, items]) => (
-                <Box pb={4} pt={2} mt={8} key={title} sx={{
-                    borderImageSource: DASH,
-                    borderImageSlice: 2,
-                    borderImageRepeat: 'round',
-                    borderTop: 'dashed 1px',
+            {Object.entries(sections).slice(0, 0).map(([title, items]) => (
+                <Box pb={0} pt={2} mt={0} key={title} sx={{
+                    // borderImageSource: DASH,
+                    // borderImageSlice: 2,
+                    // borderImageRepeat: 'round',
+                    // borderTop: 'dashed 1px',
                 }}>
+                    <Dashed mt={6} />
                     <Text fz='xs' mt={0} sx={{ fontWeight: 500 }}>{title}</Text>
                     <Text fz={'xs'} dangerouslySetInnerHTML={{ __html: items.map(o => o[0]).join(', ') }} />
                 </Box>
             ))}
         </Box>
-        {Object.entries(sections).slice(1).map(([title, items], i, arr) => (
-            <Box pb={4} pt={2} key={title} sx={{
-                borderImageSource: DASH,
-                borderImageSlice: 2,
-                borderImageRepeat: 'round',
-                borderBottom: i < (arr.length - 1) ? 'dashed 1px' : undefined,
+        <Dashed mt={6} />
+        {Object.entries(sections).slice(0).map(([title, items], i, arr) => (
+            <Box pb={0} pt={2} key={title} sx={{
+                // borderImageSource: DASH,
+                // borderImageSlice: 2,
+                // borderImageRepeat: 'round',
+                // borderBottom: i < (arr.length - 1) ? 'dashed 1px' : undefined,
             }}>
                 <Text fz='xs' sx={{ fontWeight: 500 }}>{title}</Text>
                 <Text fz={'xs'} dangerouslySetInnerHTML={{ __html: items.map(o => o[0]).join(', ') }} />
+                {i < (arr.length - 1) && <Dashed mt={4} />}
             </Box>
         ))}
     </Section>
@@ -947,7 +957,7 @@ type DashedDividerProps = Omit<DividerProps, 'variant'> & {
 function DashedDivider(props: DashedDividerProps) {
     const { ref, width } = useElementSize();
     const spacing = props.spacing || 8;
-    const count = props.segments ? props.segments : Math.floor(width / ((props?.span || 8) + spacing));
+    const count = Math.max(2, props.segments ? props.segments : Math.floor(width / ((props?.span || 8) + spacing)));
 
     return <Box ref={ref}>
         <Group spacing={spacing} sx={{ justifyContent: 'center' }}>
