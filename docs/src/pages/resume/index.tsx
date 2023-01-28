@@ -6,10 +6,12 @@ import HandshakeIcon from '@cseitz/fontawesome-react/handshake';
 import SquareIcon from '@cseitz/fontawesome-react/square';
 import JavaScriptIcon from '@cseitz/fontawesome-react/js';
 import _LinkIcon from '@cseitz/fontawesome-react/link';
-import { Avatar, Box, BoxProps, Button, Divider, Grid, Group, List, Rating, Text, Title, useMantineTheme } from '@mantine/core';
+import { Avatar, Box, BoxProps, Button, Divider, DividerProps, Grid, Group, List, Rating, Text, Title, useMantineTheme } from '@mantine/core';
 import { isArray } from 'lodash';
 import { Page } from '../../widgets/page';
 import getConfig from 'next/config';
+import { useElementSize } from '@mantine/hooks';
+import { useLayoutEffect, useState } from 'react';
 
 const website = 'https://github.com/cseitz'; //'https://cseitz.dev';
 const portfolio = website + '/portfolio';
@@ -19,6 +21,9 @@ const textIndent = 0; //'0.5em';
 const SHOW_LINKS = true;
 // const DASH = `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%2333333340' stroke-width='4' stroke-dasharray='8%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");`
 const DASH = `url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' stroke='%2333333326' stroke-width='4' stroke-dasharray='8%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");`
+
+
+const Dashed = () => <DashedDivider span={6} spacing={4} color='gray.2' />;
 
 
 function LinkIcon(props: Parameters<typeof _LinkIcon>[0]) {
@@ -915,6 +920,8 @@ function Awards() {
                 </Grid.Col>}
             </Grid>
         ))}
+        {/* <DashedDivider span={6} spacing={4} color='gray.2' /> */}
+        {/* <Dashed /> */}
     </Section>
 }
 
@@ -923,4 +930,38 @@ function Awards() {
 //     return <Box>
 
 //     </Box>
+// }
+
+
+type DashedDividerProps = Omit<DividerProps, 'variant'> & {
+    /** Fixed number of dash segments */
+    segments?: number;
+    /** Width of each segment */
+    span?: number;
+    /** The space between each segment */
+    spacing?: number;
+    /** Will a line be forcefully placed at the start and end, even if it gets cut off? */
+    // capped?: boolean;
+}
+
+function DashedDivider(props: DashedDividerProps) {
+    const { ref, width } = useElementSize();
+    const spacing = props.spacing || 8;
+    const count = props.segments ? props.segments : Math.floor(width / ((props?.span || 8) + spacing));
+
+    return <Box ref={ref}>
+        <Group spacing={spacing} sx={{ justifyContent: 'center' }}>
+            {[...new Array(count)].map((o, i) => (
+                <Divider {...props} sx={{ flexGrow: 1, ...props.sx }} key={`dash-${count}-${width}-${i}`} />
+            ))}
+        </Group>
+    </Box>
+}
+
+// function DashedLineSegment(props: BoxProps & { color: string }) {
+//     return <Box sx={{
+//         borderColor: props.color,
+//         borderBottom: '1px solid',
+//         ...props.sx,
+//     }} />
 // }
