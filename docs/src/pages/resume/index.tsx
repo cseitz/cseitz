@@ -6,7 +6,7 @@ import HandshakeIcon from '@cseitz/fontawesome-react/handshake';
 import SquareIcon from '@cseitz/fontawesome-react/square';
 import JavaScriptIcon from '@cseitz/fontawesome-react/js';
 import _LinkIcon from '@cseitz/fontawesome-react/link';
-import { Avatar, Box, BoxProps, Divider, Grid, Group, List, Rating, Text, Title, useMantineTheme } from '@mantine/core';
+import { Avatar, Box, BoxProps, Button, Divider, Grid, Group, List, Rating, Text, Title, useMantineTheme } from '@mantine/core';
 import { isArray } from 'lodash';
 import { Page } from '../../widgets/page';
 import getConfig from 'next/config';
@@ -58,7 +58,7 @@ function Header() {
     // const avatar = 'https://thispersondoesnotexist.com/image';
     // const avatar = 'https://media.tenor.com/nCfArwGenA0AAAAd/the-rock-raising-eyebrow.gif';
 
-    return <Grid pb={15} mt={-30}>
+    return <Grid pb={15 + 15} mt={-30}>
         {avatar && <Grid.Col span={2} sx={{}}>
             <Avatar size={60} src={avatar} radius={100} mx='auto' sx={{
                 transform: 'scale(150%)',
@@ -253,7 +253,7 @@ function Education() {
                 when: ['2020', '2022'],
                 href: 'https://github.com/hacksu',
                 about: [
-                    `Organized annual hackathon, led website development, managed club outreach, and hosted instructional events at weekly meetings.`,
+                    `Organized annual hackathon, led website development, managed club outreach, and taught lessons on programming at weekly meetings.`,
                 ],
                 //     about: `Student Club President of HacKSU, Kent State University's computer science club. 
                 // Facilitated club processes, organized annual hackathon, led website development and hosted instructional events at weekly meetings.`
@@ -384,7 +384,10 @@ function Experience() {
                 when: ['May 2022', 'Dec 2022'],
                 href: 'https://www.pocketworlds.com/',
                 about: [
-                    `Implemented website, mobile app, and backend features and bug fixes for an online forum social space.`,
+                    // `Implemented website, mobile app, and backend features and bug fixes for an online forum social space.`,
+                    `Implemented backend and frontend features used by over 350,000 daily active users across multiple platforms.`,
+                    `Created a high-performance image composition microservice to facilitate custom user avatars in an online forum social space.`,
+                    `Fixed numerous bugs while also increasing feature parity between the website and mobile app.`
                     // `Worked with PHP, Angular.js, and Flutter.`
                 ],
                 // about: `Implemented website, mobile app, and backend features and bug fixes for an online forum social space. `
@@ -404,7 +407,10 @@ function Experience() {
                 when: ['May 2021', 'Aug 2021'], //'Summer 2021',
                 href: 'https://hyland.com',
                 about: [
-                    `Developed software to automatically document Hyland's R&D virtual environments.`,
+                    // `Developed software to automatically document Hyland's R&D virtual environments.`,
+                    `Automated the aggregation of thousands of VM records from multiple disconnected sources into a report that cross-references known records to identify inaccuracies and missing VM documentation, ultimately providing a global view of Hyland's entire R&D VM infrastructure.`,
+                    `Developed algorithms that would make educated assumptions in the event of missing documentation with remarkable accuracy.`,
+                    // `Culminated in a final master report that could be generated on-demand to provide a global view of Hyland's entire R&D VM infrastructure broken down into teams, managers, and machines with indefinite purposes or paths to ownership.`,
                     // `Utilized Powershell and the VMWare vSphere API.`
                 ],
                 // about: `Designed software to automatically document Hyland's R&D virtual environments through Powershell and the VMWare vSphere API.`,
@@ -478,6 +484,7 @@ function Experience() {
 
 function Projects() {
     const bulleted = true;
+    const finalDash = true;
     const projects: {
         title: string
         subtitle?: string
@@ -507,9 +514,12 @@ function Projects() {
                 // performed code reviews, and facilitated nearly all group processes.`
                 // TODO: write about what my project actually was
                 about: [
+                    `Led team using the SCRUM process in the development of a CMS that facilitated an organized event, such as a conference or hackathon.`,
+                    `Implemented ticket system, schedule of events, user registration, data exports, and a fully-customizable frontend for stakeholders.`,
+                    `Documented process with detailed writeups and diagrams, including an extensive final report and user guide.`,
                     // `Lead team project to implement features as per stakeholder request.`,
-                    `Documented with diagrams & detailed writeups while ensuring deadlines were met.`,
-                    `Assigned tasks and assisted teammembers with tasks, performed code reviews, and facilitated group SCRUM processes.`
+                    // `Documented with diagrams & detailed writeups while ensuring deadlines were met.`,
+                    // `Assigned tasks and assisted teammembers with tasks, performed code reviews, and facilitated group SCRUM processes.`
                 ],
                 // about: `Lead team project to implement features as per stakeholder request. Documented with diagrams & detailed writeups, ensured deadlines were met, `
                 //     + `assigned and assisted teammembers with tasks, performed code reviews, and facilitated group SCRUM processes.`
@@ -520,17 +530,17 @@ function Projects() {
             //     href: 'https://github.com/cseitz-portfolio/lesson-vps-discussion',
             //     about: `yeyeyeyeye`
             // },
-            {
-                title: 'Software Engineering Project',
-                when: 'May 2021',
-                href: 'https://github.com/cseitz/SoftwareEngineering-Team-TGMGPA',
-                // todo: lead with "leading scrum project"
-                about: [
-                    `Implemented features and allocated work and facilitating the group SCRUM process.`,
-                ],
-                // about: `Lead team project as Scrum Master. 
-                // Implemented capabilities as per instructor request by allocating work via the Scrum process.`
-            },
+            // {
+            //     title: 'Software Engineering Project',
+            //     when: 'May 2021',
+            //     href: 'https://github.com/cseitz/SoftwareEngineering-Team-TGMGPA',
+            //     // todo: lead with "leading scrum project"
+            //     about: [
+            //         `Implemented features and allocated work and facilitating the group SCRUM process.`,
+            //     ],
+            //     // about: `Lead team project as Scrum Master. 
+            //     // Implemented capabilities as per instructor request by allocating work via the Scrum process.`
+            // },
             // {
             //     title: 'HacKSU Website',
             //     when: 'May 2021',
@@ -543,14 +553,14 @@ function Projects() {
             //     // about: `Designed and developed to replace the previous website.
             //     // Built using Vue.js and hosted on the DigitalOcean cloud.`
             // },
-            {
-                title: 'Database Project',
-                when: 'Apr 2021',
-                href: 'https://github.com/cseitz/intro-to-db-project1',
-                about: [
-                    `Designed and implemented a mock hospital MySQL database, including detailed reports and diagrams.`,
-                ]
-            },
+            // {
+            //     title: 'Database Project',
+            //     when: 'Apr 2021',
+            //     href: 'https://github.com/cseitz/intro-to-db-project1',
+            //     about: [
+            //         `Designed and implemented a mock hospital MySQL database, including detailed reports and diagrams.`,
+            //     ]
+            // },
             // {
             //     title: 'Kent Hack Enough',
             //     // when: '2020 &ndash; 2022',
@@ -585,7 +595,7 @@ function Projects() {
                     borderImageSlice: 2,
                     borderImageRepeat: 'round',
                     borderColor: 'red',
-                    borderBottom: i !== (projects.length - 1) ? 'dashed 1px' : undefined,
+                    borderBottom: i !== (projects.length - 1 + (finalDash ? 1 : 0)) ? 'dashed 1px' : undefined,
                 }}>
                     {/* {href ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
                         {result}
@@ -612,6 +622,9 @@ function Projects() {
                 )} */}
             </>
         })}
+        <Box>
+            {/* <Button variant='light'>see more</Button> */}
+        </Box>
     </Section>
 }
 
@@ -637,7 +650,7 @@ function Skills() {
             string,
         ][]
     } = {
-        'Additional Languages': [
+        'Languages': [
             ['TypeScript', colors.cyan, 'https://www.typescriptlang.org/'],
             ['JavaScript', colors.yellow, 'https://developer.mozilla.org/en-US/docs/Web/JavaScript'],
             ['HTML5', colors.orange, 'https://developer.mozilla.org/en-US/docs/Glossary/HTML5'],
@@ -647,7 +660,8 @@ function Skills() {
             ['C#', colors.blue, 'https://www.cplusplus.com/'],
             ['C++', colors.blue, 'https://www.cplusplus.com/'],
             ['PHP', colors.indigo, 'https://www.php.net/'],
-            ['Shell', colors.yellow, 'https://www.php.net/'],
+            ['Bash', colors.yellow, 'https://www.php.net/'],
+            ['PowerShell', colors.yellow, 'https://www.python.org/'],
             ['Python', colors.yellow, 'https://www.python.org/'],
         ],
         'Software & Frameworks': [
@@ -667,8 +681,9 @@ function Skills() {
             ['tRPC', colors.blue, ''],
             ['Turborepo', colors.grey, ''],
             ['Docker', colors.grey, ''],
+            ['GraphQL', colors.yellow, 'https://www.python.org/'],
             // ['Express', colors.grey, ''],
-            // ['HTML5', colors.orange, 'https://developer.mozilla.org/en-US/docs/Glossary/HTML5'],
+            ['HTML', colors.orange, 'https://developer.mozilla.org/en-US/docs/Glossary/HTML5'],
             // ['CSS', colors.blue, 'https://developer.mozilla.org/en-US/docs/Web/CSS'],
             // ['Sass', colors.pink, 'https://sass-lang.com/'],
         ],
@@ -686,7 +701,7 @@ function Skills() {
     };
     if (alphabetize) {
         Object.keys(sections).forEach(o => {
-            if (o.startsWith('Programming')) return;
+            if (o.includes('Lang')) return;
             sections[o].sort((a, b) => (a[0] as any).localeCompare(b[0]) as number)
         })
     }
@@ -714,7 +729,7 @@ function Skills() {
 
     programming.sort((a, b) => b[1] - a[1]);
 
-    sections['Additional Languages'] = sections['Additional Languages'].filter(o => !programming.find(o2 => o[0] === o2[0]));
+    // sections['Programming Languages'] = sections['Programming Languages'].filter(o => !programming.find(o2 => o[0] === o2[0]));
     // sections['Software & Frameworks'] = sections['Software & Frameworks'].filter(o => !programming.find(o2 => o[0] === o2[0]));
 
     const levelColors = [
@@ -757,7 +772,6 @@ function Skills() {
             borderImageSource: DASH,
             borderImageSlice: 2,
             borderImageRepeat: 'round',
-            borderColor: 'red',
             borderBottom: 'dashed 1px',
         }}>
             {programming.map(([title, _score, color, url, icon], i) => {
@@ -778,8 +792,13 @@ function Skills() {
                 </Box>
             })}
             {Object.entries(sections).slice(0, 1).map(([title, items]) => (
-                <Box pb={4} pt={2} key={title}>
-                    <Text fz='sm' mt={6}>{title}</Text>
+                <Box pb={4} pt={2} mt={8} key={title} sx={{
+                    borderImageSource: DASH,
+                    borderImageSlice: 2,
+                    borderImageRepeat: 'round',
+                    borderTop: 'dashed 1px',
+                }}>
+                    <Text fz='xs' mt={0} sx={{ fontWeight: 500 }}>{title}</Text>
                     <Text fz={'xs'} dangerouslySetInnerHTML={{ __html: items.map(o => o[0]).join(', ') }} />
                 </Box>
             ))}
@@ -789,10 +808,9 @@ function Skills() {
                 borderImageSource: DASH,
                 borderImageSlice: 2,
                 borderImageRepeat: 'round',
-                borderColor: 'red',
                 borderBottom: i < (arr.length - 1) ? 'dashed 1px' : undefined,
             }}>
-                <Text fz='sm'>{title}</Text>
+                <Text fz='xs' sx={{ fontWeight: 500 }}>{title}</Text>
                 <Text fz={'xs'} dangerouslySetInnerHTML={{ __html: items.map(o => o[0]).join(', ') }} />
             </Box>
         ))}
