@@ -147,7 +147,7 @@ function About() {
             Bachelor of Science in Computer Science.
         </Text>
         <Text fz={'sm'} mt={12}>
-            Graduated Magna Cum Laude from Kent State University in Fall 2022.
+            Graduated Magna Cum Laude from Kent State University in December 2022.
         </Text>
     </Section>
 }
@@ -159,7 +159,7 @@ function Education() {
     const href = `https://catalog.kent.edu/colleges/as/cs/computer-science-bs/`;
     // const degree = `B.S. Computer Science`
     const gpa = `3.82`;
-    const when = `Fall 2022`;
+    const when = `Dec 2022`;
     // const classes: string[][] = [
     //     [
     //         'Software Engineering',
@@ -421,7 +421,7 @@ function Experience() {
             {
                 title: 'Systems Engineer',
                 subtitle: 'Roblox, Independent Contractor',
-                when: ['Feb 2014', 'May 2019'],
+                when: ['Feb 2013', 'May 2019'],
                 href: 'https://create.roblox.com/docs',
                 about: [
                     <>Achieved 7<sup>th</sup> top earning experience with 6,558 peak concurrent users, 27 million active users, and an online community of over 300,000 followers.</>,

@@ -1,5 +1,5 @@
-import { ActionIcon, Affix, Box, Button, Container, Divider, Flex, Grid, Group, Paper, Portal, Stack, Text, ThemeIcon, Title, Tooltip, Transition, useMantineColorScheme, useMantineTheme } from '@mantine/core';
-import { useElementSize, useIntersection, useMediaQuery, useWindowScroll } from '@mantine/hooks';
+import { ActionIcon, Affix, Alert, Box, Button, Container, Divider, Flex, Grid, Group, Paper, Portal, Stack, Text, ThemeIcon, Title, Tooltip, Transition, useMantineColorScheme, useMantineTheme } from '@mantine/core';
+import { useColorScheme, useElementSize, useIntersection, useMediaQuery, useWindowScroll } from '@mantine/hooks';
 import { IconSun, IconMoonStars } from '@tabler/icons';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -10,6 +10,7 @@ import { faEnvelope } from '@cseitz/icons-regular/envelope';
 import { faArrowUp } from '@cseitz/icons-regular/arrow-up';
 import { Icon } from '@cseitz/icons';
 import Link from 'next/link';
+import { IconAlertCircle } from '@tabler/icons';
 
 const GithubIcon = Icon(faGithub);
 const LinkedInIcon = Icon(faLinkedinIn);
@@ -59,26 +60,22 @@ export default function Homepage() {
                 <title>Chris Seitz</title>
             </Head>
             <Header>
+                <HiringBanner />
                 <Grid>
                     <Grid.Col span={isMobile ? 12 : 7} sx={{ textAlign: isMobile ? 'center' : 'left' }}>
                         <Title>Chris Seitz</Title>
                         <Title order={isMobile ? 4 : 3} fw={'lighter'}>Full-Stack TypeScript & React Developer</Title>
                     </Grid.Col>
                     <Grid.Col span={isMobile ? 12 : 5} sx={{ display: 'flex', justifyContent: isMobile ? 'center' : 'right', alignItems: 'center' }}>
+                        {/* <ABanner /> */}
                         <Group sx={{ justifyContent: isMobile ? 'center' : 'right' }} maw={onlyIf(isMobile, '60vw')} spacing={'0.5em' as any}>
                             {links.map(({ icon: Icon, label, href }) => (
                                 <Tooltip label={href} key={href}>
                                     <Link href={href} target='_blank' style={{ color: 'inherit' }}>
-                                        {/* <ActionIcon size='lg'>
-                                            <Icon scale='80%' color={dark ? undefined : 'black'} />
-                                        </ActionIcon> */}
-                                        {/* <Button size='sm' variant={dark ? 'subtle' : 'default'} sx={{ border: 0, color: onlyIf(dark, 'white') }} leftIcon={<Icon color={onlyIf(!dark, 'black')} />}>
-                                            {label}
-                                        </Button> */}
                                         <Button size='sm' variant={dark ? 'default' : 'subtle'} sx={{
-                                            border: 0, 
+                                            border: 0,
                                             color: dark ? 'white' : 'black', //onlyIf(dark, 'white'), 
-                                            backgroundColor:  onlyIf(!dark, theme.colors.gray[0])
+                                            backgroundColor: onlyIf(!dark, theme.colors.gray[0])
                                         }} leftIcon={<Icon color={onlyIf(!dark, 'black')} />}>
                                             {label}
                                         </Button>
@@ -96,14 +93,15 @@ export default function Homepage() {
             <Stack spacing={'md'} pb={200}>
 
             </Stack> */}
-            {/* <Stack spacing={'md'} pb={200}>
+            <Stack spacing={'md'} pb={200}>
                 <Sample />
                 <Divider />
                 <Sample />
                 <Divider />
                 <Sample />
                 <Divider />
-            </Stack> */}
+            </Stack>
+            {/* <HiringBanner /> */}
         </Box>
     </Container>
 }
@@ -232,6 +230,50 @@ function Header(props: { children: any }) {
     </Box>
 }
 
+
+function HiringBanner() {
+    const theme = useMantineTheme();
+    const dark = useMantineColorScheme().colorScheme === 'dark';
+    const isMobile = useMediaQuery(`(max-width: ${800}px)`);
+
+    return <Box py={'xl'}>
+        <Alert color='teal' title='Open to work!' variant={dark ? 'light' : 'outline'} icon={<IconAlertCircle size={16} />}>
+            <Text>If you&apos;re hiring, let me know!</Text>
+        </Alert>
+    </Box >
+}
+
+function ABanner() {
+    const theme = useMantineTheme();
+    const dark = useMantineColorScheme().colorScheme === 'dark';
+    const isMobile = useMediaQuery(`(max-width: ${800}px)`);
+    return <Paper withBorder sx={{ borderColor: theme.colors.teal[5] }}>
+        <Grid>
+            <Grid.Col span={1}>
+                yeee
+            </Grid.Col>
+            <Grid.Col span='auto'>
+                <Box p='xs' sx={{ display: 'flex', justifyContent: isMobile ? 'center' : 'right', alignItems: 'center' }}>
+                    <Group sx={{ justifyContent: isMobile ? 'center' : 'right' }} maw={onlyIf(isMobile, '60vw')} spacing={'0.5em' as any}>
+                        {links.map(({ icon: Icon, label, href }) => (
+                            <Tooltip label={href} key={href}>
+                                <Link href={href} target='_blank' style={{ color: 'inherit' }}>
+                                    <Button size='sm' variant={dark ? 'default' : 'subtle'} sx={{
+                                        border: 0,
+                                        color: dark ? 'white' : 'black', //onlyIf(dark, 'white'), 
+                                        backgroundColor: onlyIf(!dark, theme.colors.gray[0])
+                                    }} leftIcon={<Icon color={onlyIf(!dark, 'black')} />}>
+                                        {label}
+                                    </Button>
+                                </Link>
+                            </Tooltip>
+                        ))}
+                    </Group>
+                </Box>
+            </Grid.Col>
+        </Grid>
+    </Paper>
+}
 
 function Sample() {
     return <Box>
