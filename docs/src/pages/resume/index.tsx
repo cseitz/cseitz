@@ -164,6 +164,7 @@ function Education() {
     const place = `Kent State University`;
     const degree = `Bachelor of Science in Computer Science`;
     const href = `https://catalog.kent.edu/colleges/as/cs/computer-science-bs/`;
+    const linkLocation: 'place' | 'degree' = 'place' as any;
     // const degree = `B.S. Computer Science`
     const gpa = `3.82`;
     const when = `Dec 2022`;
@@ -270,13 +271,17 @@ function Education() {
         <Grid pb={8} pt={4}>
             <Grid.Col span={11} pt={4} pb={0}>
                 <Text fz='sm'>
-                    {href ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
+                    {href && linkLocation === 'degree' ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
                         {degree} {SHOW_LINKS && <LinkIcon sx={{}} />}
                     </a> : degree}
                 </Text>
             </Grid.Col>
             <Grid.Col span={9} pb={0} pt={0}>
-                <Text fz='sm' fw={'lighter'}>{place}</Text>
+                <Text fz='sm' fw={'lighter'}>
+                    {href && linkLocation === 'place' ? <a style={{ textDecoration: 'none', color: 'inherit' }} href={href} target='_blank' rel="noreferrer">
+                        {place} {SHOW_LINKS && <LinkIcon sx={{}} />}
+                    </a> : place}
+                </Text>
             </Grid.Col>
             <Grid.Col span={3} pb={0} pt={0} sx={{ textAlign: 'right' }} pr={10}>
                 <Text fz="sm" fw={'lighter'}>{when}</Text>
@@ -397,7 +402,7 @@ function Experience() {
                     // `Implemented website, mobile app, and backend features and bug fixes for an online forum social space.`,
                     `Implemented backend and frontend features used by over 350,000 daily active users across multiple platforms.`,
                     `Created a high-performance image composition microservice to facilitate custom user avatars in an online forum social space.`,
-                    `Fixed numerous bugs while also increasing feature parity between the website and mobile app.`
+                    // `Fixed numerous bugs while also increasing feature parity between the website and mobile app.`
                     // `Worked with PHP, Angular.js, and Flutter.`
                 ],
                 // about: `Implemented website, mobile app, and backend features and bug fixes for an online forum social space. `
@@ -419,7 +424,7 @@ function Experience() {
                 about: [
                     // `Developed software to automatically document Hyland's R&D virtual environments.`,
                     `Automated the aggregation of thousands of VM records from multiple disconnected sources into a report that cross-references known records to identify inaccuracies and missing VM documentation, ultimately providing a global view of Hyland's entire R&D VM infrastructure.`,
-                    `Developed algorithms that would make educated assumptions in the event of missing documentation with remarkable accuracy.`,
+                    // `Developed algorithms that would make educated assumptions in the event of missing documentation with remarkable accuracy.`,
                     // `Culminated in a final master report that could be generated on-demand to provide a global view of Hyland's entire R&D VM infrastructure broken down into teams, managers, and machines with indefinite purposes or paths to ownership.`,
                     // `Utilized Powershell and the VMWare vSphere API.`
                 ],
@@ -505,7 +510,7 @@ function Projects() {
     }[] = [
             {
                 title: 'Kent Hack Enough 2023',
-                when: 'Dec 2022',
+                when: 'Jan 2023',
                 href: 'https://github.com/hacksu/khe-2023',
                 // about: `Leading planning & development for React, Next.js, Node.js, and TypeScript monorepo intended to replace the aging Kent Hack Enough systems.`
                 // about: `Developed Kent Hack Enough monorepo containing server, staff management portal, and UI library with reusable logical components and separated styling from logical code in annual websites using NextJS. `
@@ -552,18 +557,20 @@ function Projects() {
             //     // about: `Lead team project as Scrum Master. 
             //     // Implemented capabilities as per instructor request by allocating work via the Scrum process.`
             // },
-            // {
-            //     title: 'HacKSU Website',
-            //     when: 'May 2021',
-            //     href: `https://github.com/hacksu/hacksu-2021`,
-            //     // about: `Developed Vue.js website to replace the previous website.`
-            //     about: [
-            //         // `Designed and developed to replace the previous website.`,
-            //         `Built using Vue.js and hosted on the DigitalOcean cloud.`,
-            //     ]
-            //     // about: `Designed and developed to replace the previous website.
-            //     // Built using Vue.js and hosted on the DigitalOcean cloud.`
-            // },
+            {
+                title: 'HacKSU Website',
+                when: 'May 2021',
+                href: `https://github.com/hacksu/hacksu-2021`,
+                // about: `Developed Vue.js website to replace the previous website.`
+                about: [
+                    // `Designed and developed to replace the previous website.`,
+                    `Designed a new website that utilized HacKSU's latest branding.`,
+                    `Implemented additional features such as a mailing list, short URL redirects, and an alumni page to keep track of previous club officers.`,
+                    `Built using Vue.js and hosted on the DigitalOcean cloud.`,
+                ]
+                // about: `Designed and developed to replace the previous website.
+                // Built using Vue.js and hosted on the DigitalOcean cloud.`
+            },
             // {
             //     title: 'Database Project',
             //     when: 'Apr 2021',
@@ -769,7 +776,7 @@ function Skills() {
                 width: Math.pow((levels + 1) - value, 2) * 0.6 + 4,
                 // backgroundColor: mode === 'empty' ? 'rgba(51, 51, 51, 0.25)' : theme.colors.blue[6],
                 backgroundColor: mode === 'empty' ? 'rgba(51, 51, 51, 0.25)' : color,
-                height: '0.5em',
+                height: 6, //8, //'0.4em', //'0.5em',
                 borderRadius: '2px'
             },
             // my: 2,
@@ -839,12 +846,12 @@ function Awards() {
         href?: string;
         subtitle?: string | JSX.Element;
     }[] = [
-            // {
-            //     title: `Dean's List`,
-            //     subtitle: 'Kent State University',
-            //     href: 'https://www.kent.edu/',
-            //     when: '2019 - 2022'
-            // },
+            {
+                title: `Dean's List`,
+                subtitle: 'Kent State University',
+                href: 'https://www.kent.edu/',
+                when: '2019 - 2022'
+            },
             {
                 title: 'Honors College Scholar',
                 subtitle: 'Kent State University',
@@ -853,7 +860,7 @@ function Awards() {
             },
             // {
             //     title: 'Choose Ohio First',
-            //     subtitle: 'Academic Scholarship',
+            //     subtitle: 'Merit Scholarship',
             //     href: 'https://highered.ohio.gov/initiatives/affordability/choose-ohio-first/cof-overview/cof',
             //     when: '2020 - 2022'
             // },
