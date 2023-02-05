@@ -37,7 +37,7 @@ const Sections = {
             website: 'https://github.com/cseitz',
             email,
             phone,
-        }} />
+        }} pb={10} mt={-30} />
     },
 
     Education: () => <Education
@@ -71,8 +71,10 @@ const Sections = {
                 when: ['May 2022', 'Dec 2022'],
                 href: 'https://www.pocketworlds.com/',
                 about: [
-                    `Implemented backend and frontend features used by thousands of users across multiple platforms.`,
-                    `Created a high-performance image composition microservice to facilitate custom user avatars in an online forum social space.`,
+                    `Implemented peer-to-peer tip jar payment processing and an animated avatar system, boosting user experience and platform monetization.`,
+                    `Maintained a full-stack online social forum used by thousands of users using PHP, AngularJS, and Flutter, driving increased reliability and user engagement.`,
+                    // `Created a high-performance image composition microservice to facilitate custom user avatars in an online forum social space.`,
+                    // `Implemented backend and frontend features used by thousands of users across multiple platforms.`,
                 ],
             },
             {
@@ -81,7 +83,9 @@ const Sections = {
                 when: ['May 2021', 'Aug 2021'],
                 href: 'https://hyland.com',
                 about: [
-                    `Automated the aggregation of thousands of VM records from multiple disconnected sources into a report that cross-references known records to identify inaccuracies and missing VM documentation, ultimately providing a global view of Hyland's entire R&D VM infrastructure.`,
+                    `Automated VM audit process using PowerShell script and VMWare API, resulting in efficient classification and tracking of thousands of VMs.`,
+                    `Developed web-based interface in JavaScript for drafting and sending emails, improving accuracy of VM usage data and saving company resources.`,
+                    // `Automated the aggregation of thousands of VM records from multiple disconnected sources into a report that cross-references known records to identify inaccuracies and missing VM documentation, ultimately providing a global view of Hyland's entire R&D VM infrastructure.`,
                 ],
             },
             {
@@ -99,11 +103,11 @@ const Sections = {
 
     Projects: () => <Projects
         bulleted
-        finalDash
+        // finalDash
         projects={[
             {
                 title: 'Kent Hack Enough 2023',
-                when: 'Jan 2023',
+                when: 'Feb 2023',
                 href: 'https://github.com/hacksu/khe-2023',
                 about: [
                     `Designed monorepo containing server, staff management portal, and UI library with reusable logical components and separated styling from logical code in annual websites using NextJS.`,
@@ -127,7 +131,7 @@ const Sections = {
                 about: [
                     `Designed a new website that utilized HacKSU's latest branding.`,
                     `Implemented additional features such as a mailing list, short URL redirects, and an alumni page to keep track of previous club officers.`,
-                    `Built using Vue.js and hosted on the DigitalOcean cloud.`,
+                    // `Built using Vue.js and hosted on the DigitalOcean cloud.`,
                 ]
             },
         ]} />,
